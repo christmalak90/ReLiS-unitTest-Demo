@@ -1,5 +1,5 @@
 ############################### NEW #################################
-name: Relis unit test
+name: Relis unit test on pull request
 
 on:
   pull_request:
@@ -38,13 +38,13 @@ jobs:
 
       - name: Run Unit test
         run: |
-          function revert_changes() {
-            curl \
-            -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/$GITHUB_ACTOR/$(basename $GITHUB_REPOSITORY)/actions/workflows/revert_pushed_commit.yml/dispatches \
-            -d '{"ref":"develop"}'
-          }
+          # function revert_changes() {
+          #   curl \
+          #   -X POST \
+          #   -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          #   https://api.github.com/repos/$GITHUB_ACTOR/$(basename $GITHUB_REPOSITORY)/actions/workflows/revert_pushed_commit.yml/dispatches \
+          #   -d '{"ref":"develop"}'
+          # }
 
           response=$(php -r " echo file_get_contents('http://localhost:8083/test/unit_test/relis_unit_test/last_result');")
           
@@ -52,15 +52,15 @@ jobs:
             echo "The unit test passed. Proceeding with the workflow."
 
           elif [ "$response" == "failed" ]; then
-            echo "The unit test failed. Reverting changes"
+            echo "The unit test failed"
             echo "Browse to http://localhost:8083/test/unit_test/relis_unit_test in you local browser for more details"
-            revert_changes
+            # revert_changes ////////////////////////
             exit 1
 
           else
-            echo "The unit test has an error. Reverting changes"
-            # echo $response
-            revert_changes
+            echo "The unit test has an error" 
+            echo $response
+            # revert_changes /////////////////////////////
             exit 1
           fi
 

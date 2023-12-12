@@ -1,5 +1,5 @@
 ############################### NEW #################################
-name: Relis unit test
+name: Relis unit test on push
 
 on:
   push:

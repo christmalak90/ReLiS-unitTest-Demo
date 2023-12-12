@@ -56,6 +56,7 @@ class Reporting extends CI_Controller
 			if (!(!empty($value_conf['compute_result']) and $value_conf['compute_result'] == 'no')) {
 				if (isset($value_conf['number_of_values']) and ($value_conf['number_of_values'] == '1') and ($value_conf['input_type'] == 'select') and ($value_conf['input_select_source'] == 'table' or $value_conf['input_select_source'] == 'array' or $value_conf['input_select_source'] == 'yes_no')) {
 					$ref_field = $key_conf;
+					$ref_config = null;
 					if ($value_conf['input_select_source'] == 'array') {
 						$result = $this->Data_extraction_dataAccess->get_result_classification($key_conf);
 						foreach ($result as $key => $value) {
@@ -247,21 +248,20 @@ class Reporting extends CI_Controller
 		if (!empty($data['list'])) {
 			array_unshift($list_to_display, $field_list_header);
 		}
-        try {
-            $f_new = fopen("cside/export_r/relis_classification_" . project_db() . ".csv", 'w');
-            if (!$f_new) {
-                throw new Exception('Could not open file relis_classification_'. project_db() . ".csv");
-            }
-            // Iterate over the data, writting each line to the text stream
-            foreach ($list_to_display as $val) {
-                fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
-            }
-            fclose($f_new);
-            set_top_msg(lng_min('File generated'));
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+		try {
+			$f_new = fopen("cside/export_r/relis_classification_" . project_db() . ".csv", 'w');
+			if (!$f_new) {
+				throw new Exception('Could not open file relis_classification_' . project_db() . ".csv");
+			}
+			// Iterate over the data, writting each line to the text stream
+			foreach ($list_to_display as $val) {
+				fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
+			}
+			fclose($f_new);
+			set_top_msg(lng_min('File generated'));
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('reporting/result_export');
 	}
 
@@ -316,20 +316,19 @@ class Reporting extends CI_Controller
 		//print_test($array_header);
 		array_unshift($result, $array_header);
 		//print_test($result);
-        try {
-            // Iterate over the data, writting each line to the text stream
-            $f_new = fopen("cside/export_r/export_classification_" . project_db() . ".csv", 'w');
-            if (!$f_new) {
-                throw new Exception('Could not open file export_classification_'. project_db() . ".csv");
-            }
-            foreach ($result as $val) {
-                fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
-            }
-            fclose($f_new);
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+		try {
+			// Iterate over the data, writting each line to the text stream
+			$f_new = fopen("cside/export_r/export_classification_" . project_db() . ".csv", 'w');
+			if (!$f_new) {
+				throw new Exception('Could not open file export_classification_' . project_db() . ".csv");
+			}
+			foreach ($result as $val) {
+				fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
+			}
+			fclose($f_new);
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('home/export');
 	}
 
@@ -365,23 +364,22 @@ class Reporting extends CI_Controller
 		array_unshift($papers, $array_header);
 		$filename = "cside/export_r/relis_paper_excluded_class_" . project_db() . ".csv";
 		//print_test($papers);
-        try {
-            // Create a stream opening it with read / write mode
-            $f_new = fopen($filename, 'w');
-            if (!$f_new) {
-                throw new Exception('Could not open file '. $filename);
-            }
-            // Iterate over the data, writting each line to the text stream
-            foreach ($papers as $val) {
-                fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
-            }
-            // Close the stream
-            fclose($f_new);
-            set_top_msg(lng_min('File generated'));
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+		try {
+			// Create a stream opening it with read / write mode
+			$f_new = fopen($filename, 'w');
+			if (!$f_new) {
+				throw new Exception('Could not open file ' . $filename);
+			}
+			// Iterate over the data, writting each line to the text stream
+			foreach ($papers as $val) {
+				fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
+			}
+			// Close the stream
+			fclose($f_new);
+			set_top_msg(lng_min('File generated'));
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('reporting/result_export');
 	}
 
@@ -396,27 +394,26 @@ class Reporting extends CI_Controller
 		$result = $data->result_array();
 		$array_header = array('#', "key", 'Title', 'Link', 'Preview', 'Abstract', 'Year');
 		array_unshift($result, $array_header);
-        try {
-            // Create a stream opening it with read / write mode
-            $f_new = fopen("cside/export_r/relis_paper_" . project_db() . ".csv", 'w');
-            if (!$f_new) {
-                throw new Exception('Could not open file relis_paper_'. project_db() . ".csv");
-            }
-            // Iterate over the data, writing each line to the text stream
-            $i = 0;
-            foreach ($result as $val) {
-                if ($i > 0) {
-                    $val['id'] = $i;
-                }
-                fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
-                $i++;
-            }
-            fclose($f_new);
-            set_top_msg(lng_min('File generated'));
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+		try {
+			// Create a stream opening it with read / write mode
+			$f_new = fopen("cside/export_r/relis_paper_" . project_db() . ".csv", 'w');
+			if (!$f_new) {
+				throw new Exception('Could not open file relis_paper_' . project_db() . ".csv");
+			}
+			// Iterate over the data, writing each line to the text stream
+			$i = 0;
+			foreach ($result as $val) {
+				if ($i > 0) {
+					$val['id'] = $i;
+				}
+				fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
+				$i++;
+			}
+			fclose($f_new);
+			set_top_msg(lng_min('File generated'));
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('reporting/result_export');
 	}
 
@@ -456,30 +453,29 @@ class Reporting extends CI_Controller
 		//print_test($result);
 		//$array_header=array('#',"key",'Title','Link','Preview','Abstract','Year','Bibtex');
 		//array_unshift($result, $array_header);
-        try {
-            // Create a stream opening it with read / write mode
-            $f_new = fopen($filename, 'w');
-            if (!$f_new) {
-                throw new Exception('Could not open file ' . $filename);
-            }
-            // Iterate over the data, writting each line to the text stream
-            foreach ($result as $val) {
-                //print_test($val);
-                if (!empty($val['bibtex'])) {
-                    fputs($f_new, $val['bibtex'] . "\n");
-                }
-            }
-            // Rewind the stream
-            //rewind($stream);
-            // You can now echo it's content
-            //echo stream_get_contents($stream);
-            // Close the stream
-            fclose($f_new);
-            set_top_msg(lng_min('File generated'));
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+		try {
+			// Create a stream opening it with read / write mode
+			$f_new = fopen($filename, 'w');
+			if (!$f_new) {
+				throw new Exception('Could not open file ' . $filename);
+			}
+			// Iterate over the data, writting each line to the text stream
+			foreach ($result as $val) {
+				//print_test($val);
+				if (!empty($val['bibtex'])) {
+					fputs($f_new, $val['bibtex'] . "\n");
+				}
+			}
+			// Rewind the stream
+			//rewind($stream);
+			// You can now echo it's content
+			//echo stream_get_contents($stream);
+			// Close the stream
+			fclose($f_new);
+			set_top_msg(lng_min('File generated'));
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('reporting/result_export');
 	}
 
@@ -512,27 +508,26 @@ class Reporting extends CI_Controller
 			$papers[$value['id']]['screening_note' . $value['user_id']] = $value['screening_note'];
 		}
 		$array_header = array('#', "key", 'Title', 'Preview', 'Excluded By', 'Criteria', 'Note');
-		
+
 		array_unshift($papers, $array_header);
 		$filename = "cside/export_r/relis_paper_excluded_screen_" . project_db() . ".csv";
 		//print_test($papers);
 		// Create a stream opening it with read / write mode
-        try {
-            $f_new = fopen($filename, 'w');
-            if (!$f_new) {
-                throw new Exception('Could not open file relis_paper_excluded_screen_'. project_db() . ".csv");
-            }
-            // Iterate over the data, writing each line to the text stream
-            foreach ($papers as $val) {
-                fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
-            }
-            // Close the stream
-            fclose($f_new);
-            set_top_msg(lng_min('File generated'));
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+		try {
+			$f_new = fopen($filename, 'w');
+			if (!$f_new) {
+				throw new Exception('Could not open file relis_paper_excluded_screen_' . project_db() . ".csv");
+			}
+			// Iterate over the data, writing each line to the text stream
+			foreach ($papers as $val) {
+				fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
+			}
+			// Close the stream
+			fclose($f_new);
+			set_top_msg(lng_min('File generated'));
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('reporting/result_export');
 	}
 
@@ -554,25 +549,24 @@ class Reporting extends CI_Controller
 		array_unshift($result, $array_header);
 		//print_test($result);
 		// Create a stream opening it with read / write mode
-        try {
-            // Iterate over the data, writting each line to the text stream
-            $f_new = fopen("cside/export_r/export_paper_" . project_db() . ".csv", 'w');
-            if (!$f_new) {
-                throw new Exception('Could not open file export_paper_'. project_db() . ".csv");
-            }
-            foreach ($result as $val) {
-                fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
-            }
-            // Rewind the stream
-            //rewind($stream);
-            // You can now echo it's content
-            //echo stream_get_contents($stream);
-            // Close the stream
-            fclose($f_new);
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+		try {
+			// Iterate over the data, writting each line to the text stream
+			$f_new = fopen("cside/export_r/export_paper_" . project_db() . ".csv", 'w');
+			if (!$f_new) {
+				throw new Exception('Could not open file export_paper_' . project_db() . ".csv");
+			}
+			foreach ($result as $val) {
+				fputcsv($f_new, $val, get_appconfig_element('csv_field_separator_export'));
+			}
+			// Rewind the stream
+			//rewind($stream);
+			// You can now echo it's content
+			//echo stream_get_contents($stream);
+			// Close the stream
+			fclose($f_new);
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('home/export');
 	}
 
@@ -620,155 +614,154 @@ class Reporting extends CI_Controller
 				$continuous_df[] = $title;
 			}
 		}
-        try {
-            // Open the new R script file for writing
-            $output_file_handle = fopen($output_file, "w");
-            if (!$output_file_handle) {
-                throw new Exception('Could not open file ' . $output_file);
-            }
-            fwrite($output_file_handle, "source('relis_r_lib_" . project_db() . ".R') # Replace this with the name of your imported library file\n");
-            fwrite($output_file_handle, "\n# The following lines consist of all the tests/plots corresponding to each category. Uncomment the required lines. \n");
-            // Descriptive statistics
-            fwrite($output_file_handle, "\n# Descriptive statistics\n");
-            fwrite($output_file_handle, "\n# Frequency tables~Descriptive stats(Nominal variables)\n");
-            foreach ($nominal_df as $title) {
-                $line = "# desc_distr_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+		try {
+			// Open the new R script file for writing
+			$output_file_handle = fopen($output_file, "w");
+			if (!$output_file_handle) {
+				throw new Exception('Could not open file ' . $output_file);
+			}
+			fwrite($output_file_handle, "source('relis_r_lib_" . project_db() . ".R') # Replace this with the name of your imported library file\n");
+			fwrite($output_file_handle, "\n# The following lines consist of all the tests/plots corresponding to each category. Uncomment the required lines. \n");
+			// Descriptive statistics
+			fwrite($output_file_handle, "\n# Descriptive statistics\n");
+			fwrite($output_file_handle, "\n# Frequency tables~Descriptive stats(Nominal variables)\n");
+			foreach ($nominal_df as $title) {
+				$line = "# desc_distr_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n# Bar Plots~Descriptive stats(Nominal variables)\n");
-            foreach ($nominal_df as $title) {
-                $line = "# bar_plot_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+			fwrite($output_file_handle, "\n# Bar Plots~Descriptive stats(Nominal variables)\n");
+			foreach ($nominal_df as $title) {
+				$line = "# bar_plot_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n# Statistics~Descriptive stats(Continuous variables)\n");
-            foreach ($continuous_df as $title) {
-                $line = "# statistics_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+			fwrite($output_file_handle, "\n# Statistics~Descriptive stats(Continuous variables)\n");
+			foreach ($continuous_df as $title) {
+				$line = "# statistics_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n# Box Plots~Descriptive stats(Continuous variables)\n");
-            foreach ($continuous_df as $title) {
-                $line = "# box_plot_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+			fwrite($output_file_handle, "\n# Box Plots~Descriptive stats(Continuous variables)\n");
+			foreach ($continuous_df as $title) {
+				$line = "# box_plot_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n# Violin Plots~Descriptive stats(Continuous variables)\n");
-            foreach ($continuous_df as $title) {
-                $line = "# violin_plot_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+			fwrite($output_file_handle, "\n# Violin Plots~Descriptive stats(Continuous variables)\n");
+			foreach ($continuous_df as $title) {
+				$line = "# violin_plot_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n#######################################################################################\n");
+			fwrite($output_file_handle, "\n#######################################################################################\n");
 
-            // Evolution statistics
-            fwrite($output_file_handle, "\n# Evolution statistics\n");
-            fwrite($output_file_handle, "\n# Frequency tables~Evolution stats(Nominal variables)\n");
-            foreach ($nominal_df as $title) {
-                $line = "# evo_distr_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+			// Evolution statistics
+			fwrite($output_file_handle, "\n# Evolution statistics\n");
+			fwrite($output_file_handle, "\n# Frequency tables~Evolution stats(Nominal variables)\n");
+			foreach ($nominal_df as $title) {
+				$line = "# evo_distr_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n# Evolution Plots~Evolution stats(Nominal variables)\n");
-            foreach ($nominal_df as $title) {
-                $line = "# evolution_plot_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+			fwrite($output_file_handle, "\n# Evolution Plots~Evolution stats(Nominal variables)\n");
+			foreach ($nominal_df as $title) {
+				$line = "# evolution_plot_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n#######################################################################################\n");
+			fwrite($output_file_handle, "\n#######################################################################################\n");
 
-            // Comparative statistics
-            fwrite($output_file_handle, "\n# Comparative statistics\n");
-            fwrite($output_file_handle, "# Frequency Tables~Comparative stats(Nominal variables)\n");
-            foreach ($nominal_df as $title_1) {
-                foreach ($nominal_df as $title_2) {
-                    if ($title_1 !== $title_2) {
-                        $line = "# comp_distr_vector[['$title_1']][['$title_2']]\n";
-                        fwrite($output_file_handle, $line);
-                    }
-                }
-            }
+			// Comparative statistics
+			fwrite($output_file_handle, "\n# Comparative statistics\n");
+			fwrite($output_file_handle, "# Frequency Tables~Comparative stats(Nominal variables)\n");
+			foreach ($nominal_df as $title_1) {
+				foreach ($nominal_df as $title_2) {
+					if ($title_1 !== $title_2) {
+						$line = "# comp_distr_vector[['$title_1']][['$title_2']]\n";
+						fwrite($output_file_handle, $line);
+					}
+				}
+			}
 
-            fwrite($output_file_handle, "\n# Stacked Bar Plots~Comparative stats(Nominal variables)\n");
-            foreach ($nominal_df as $title_1) {
-                foreach ($nominal_df as $title_2) {
-                    if ($title_1 !== $title_2) {
-                        $line = "# stacked_bar_plot_vector[['$title_1']][['$title_2']]\n";
-                        fwrite($output_file_handle, $line);
-                    }
-                }
-            }
+			fwrite($output_file_handle, "\n# Stacked Bar Plots~Comparative stats(Nominal variables)\n");
+			foreach ($nominal_df as $title_1) {
+				foreach ($nominal_df as $title_2) {
+					if ($title_1 !== $title_2) {
+						$line = "# stacked_bar_plot_vector[['$title_1']][['$title_2']]\n";
+						fwrite($output_file_handle, $line);
+					}
+				}
+			}
 
-            fwrite($output_file_handle, "\n# Grouped Bar Plots~Comparative stats(Nominal variables)\n");
-            foreach ($nominal_df as $title_1) {
-                foreach ($nominal_df as $title_2) {
-                    if ($title_1 !== $title_2) {
-                        $line = "# grouped_bar_plot_vector[['$title_1']][['$title_2']]\n";
-                        fwrite($output_file_handle, $line);
-                    }
-                }
-            }
+			fwrite($output_file_handle, "\n# Grouped Bar Plots~Comparative stats(Nominal variables)\n");
+			foreach ($nominal_df as $title_1) {
+				foreach ($nominal_df as $title_2) {
+					if ($title_1 !== $title_2) {
+						$line = "# grouped_bar_plot_vector[['$title_1']][['$title_2']]\n";
+						fwrite($output_file_handle, $line);
+					}
+				}
+			}
 
-            fwrite($output_file_handle, "\n# Bubble Charts~Comparative stats(Nominal variables)\n");
-            foreach ($nominal_df as $title_1) {
-                foreach ($nominal_df as $title_2) {
-                    if ($title_1 !== $title_2) {
-                        $line = "# bubble_chart_vector[['$title_1']][['$title_2']]\n";
-                        fwrite($output_file_handle, $line);
-                    }
-                }
-            }
+			fwrite($output_file_handle, "\n# Bubble Charts~Comparative stats(Nominal variables)\n");
+			foreach ($nominal_df as $title_1) {
+				foreach ($nominal_df as $title_2) {
+					if ($title_1 !== $title_2) {
+						$line = "# bubble_chart_vector[['$title_1']][['$title_2']]\n";
+						fwrite($output_file_handle, $line);
+					}
+				}
+			}
 
-            fwrite($output_file_handle, "\n# Fisher's Exact Test~Comparative stats(Nominal variables)\n");
-            foreach ($nominal_df as $title_1) {
-                foreach ($nominal_df as $title_2) {
-                    if ($title_1 !== $title_2) {
-                        $line = "# fisher_exact_test_vector[['$title_1']][['$title_2']]\n";
-                        fwrite($output_file_handle, $line);
-                    }
-                }
-            }
+			fwrite($output_file_handle, "\n# Fisher's Exact Test~Comparative stats(Nominal variables)\n");
+			foreach ($nominal_df as $title_1) {
+				foreach ($nominal_df as $title_2) {
+					if ($title_1 !== $title_2) {
+						$line = "# fisher_exact_test_vector[['$title_1']][['$title_2']]\n";
+						fwrite($output_file_handle, $line);
+					}
+				}
+			}
 
-            fwrite($output_file_handle, "\n# Shapiro Wilk's Correlation Test~Comparative stats(Continuous variables)\n");
-            foreach ($continuous_df as $title) {
-                $line = "# shapiro_wilk_test_vector[['$title']]\n";
-                fwrite($output_file_handle, $line);
-            }
+			fwrite($output_file_handle, "\n# Shapiro Wilk's Correlation Test~Comparative stats(Continuous variables)\n");
+			foreach ($continuous_df as $title) {
+				$line = "# shapiro_wilk_test_vector[['$title']]\n";
+				fwrite($output_file_handle, $line);
+			}
 
-            fwrite($output_file_handle, "\n# Pearson's Correlation Test~Comparative stats(Continuous variables)\n");
-            foreach ($continuous_df as $title_1) {
-                foreach ($continuous_df as $title_2) {
-                    if ($title_1 !== $title_2) {
-                        $line = "# pearson_cor_test_vector[['$title_1']][['$title_2']]\n";
-                        fwrite($output_file_handle, $line);
-                    }
-                }
-            }
+			fwrite($output_file_handle, "\n# Pearson's Correlation Test~Comparative stats(Continuous variables)\n");
+			foreach ($continuous_df as $title_1) {
+				foreach ($continuous_df as $title_2) {
+					if ($title_1 !== $title_2) {
+						$line = "# pearson_cor_test_vector[['$title_1']][['$title_2']]\n";
+						fwrite($output_file_handle, $line);
+					}
+				}
+			}
 
-            fwrite($output_file_handle, "\n# Spearman's Correlation Test~Comparative stats(Continuous variables)\n");
-            foreach ($continuous_df as $title_1) {
-                foreach ($continuous_df as $title_2) {
-                    if ($title_1 !== $title_2) {
-                        $line = "# spearman_cor_test_vector[['$title_1']][['$title_2']]\n";
-                        fwrite($output_file_handle, $line);
-                    }
-                }
-            }
+			fwrite($output_file_handle, "\n# Spearman's Correlation Test~Comparative stats(Continuous variables)\n");
+			foreach ($continuous_df as $title_1) {
+				foreach ($continuous_df as $title_2) {
+					if ($title_1 !== $title_2) {
+						$line = "# spearman_cor_test_vector[['$title_1']][['$title_2']]\n";
+						fwrite($output_file_handle, $line);
+					}
+				}
+			}
 
-            fwrite($output_file_handle, "\n#######################################################################################");
+			fwrite($output_file_handle, "\n#######################################################################################");
 
-            // Close the file after writing
-            fclose($output_file_handle);
+			// Close the file after writing
+			fclose($output_file_handle);
 
 
-            //write_file($output_file, $script);
-            set_top_msg(lng_min('File generated'));
-            $this->result_r_lib($r_post_arr);
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+			//write_file($output_file, $script);
+			set_top_msg(lng_min('File generated'));
+			$this->result_r_lib($r_post_arr);
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('reporting/result_export');
 
 	}
@@ -776,12 +769,12 @@ class Reporting extends CI_Controller
 	public function result_r_lib($r_post_arr)
 	{
 		$output_file = "cside/export_r/relis_r_lib_" . project_db() . ".R";
-        try {
-            $output_file_handle = fopen($output_file, "w");
-            if (!$output_file_handle) {
-                throw new Exception('Could not open file ' . $output_file);
-            }
-            fwrite($output_file_handle, '#Install and load the necessary packages
+		try {
+			$output_file_handle = fopen($output_file, "w");
+			if (!$output_file_handle) {
+				throw new Exception('Could not open file ' . $output_file);
+			}
+			fwrite($output_file_handle, '#Install and load the necessary packages
 		packgs <- c("tidyverse", "qdapRegex", "data.table", "janitor", "dplyr", "ggplot2", "cowplot", "psych")
 		install.packages(setdiff(packgs, unique(data.frame(installed.packages())$Package)))
 		lapply(packgs, library, character.only=TRUE)
@@ -792,35 +785,35 @@ class Reporting extends CI_Controller
 		config_file <- data.frame(Column_name = c(');
 
 
-            $iteration = 1;
-            foreach ($r_post_arr as $title => $scale) {
-                $title = preg_replace('/[\s_\-?]/', '.', trim($title, '_'));
-                $word = '"' . $title . '"';
-                fwrite($output_file_handle, $word);
+			$iteration = 1;
+			foreach ($r_post_arr as $title => $scale) {
+				$title = preg_replace('/[\s_\-?]/', '.', trim($title, '_'));
+				$word = '"' . $title . '"';
+				fwrite($output_file_handle, $word);
 
-                if ($iteration != count($r_post_arr)) {
-                    fwrite($output_file_handle, ',');
-                    $iteration++;
-                }
-            }
+				if ($iteration != count($r_post_arr)) {
+					fwrite($output_file_handle, ',');
+					$iteration++;
+				}
+			}
 
-            fwrite($output_file_handle, ') , 
+			fwrite($output_file_handle, ') , 
 		Scale = c(');
 
-            $iteration = 1;
-            foreach ($r_post_arr as $title => $scale) {
-                $title = preg_replace('/[\s_\-?]/', '.', trim($title, '_'));
-                $word = '"' . $scale . '"';
-                fwrite($output_file_handle, $word);
+			$iteration = 1;
+			foreach ($r_post_arr as $title => $scale) {
+				$title = preg_replace('/[\s_\-?]/', '.', trim($title, '_'));
+				$word = '"' . $scale . '"';
+				fwrite($output_file_handle, $word);
 
-                if ($iteration != count($r_post_arr)) {
-                    fwrite($output_file_handle, ',');
-                    $iteration++;
-                }
-            }
+				if ($iteration != count($r_post_arr)) {
+					fwrite($output_file_handle, ',');
+					$iteration++;
+				}
+			}
 
 
-            fwrite($output_file_handle, ')) 
+			fwrite($output_file_handle, ')) 
 		# Beautifying Title
 		config_file <- config_file %>%
 		  mutate(Title = str_replace_all(trimws(Column_name), "\\\\.", " "))
@@ -1151,14 +1144,13 @@ class Reporting extends CI_Controller
 		}
 		##########################################################################################################');
 
-            // Close the file after writing
-            fclose($output_file_handle);
+			// Close the file after writing
+			fclose($output_file_handle);
 
-            set_top_msg(lng_min('File generated'));
-        }
-        catch (Exception $e) {
-            set_top_msg(lng_min("Error (File: ".$e->getFile().", line ".$e->getLine()."): ".$e->getMessage()), 'error');
-        }
+			set_top_msg(lng_min('File generated'));
+		} catch (Exception $e) {
+			set_top_msg(lng_min("Error (File: " . $e->getFile() . ", line " . $e->getLine() . "): " . $e->getMessage()), 'error');
+		}
 		redirect('reporting/result_export');
 	}
 }

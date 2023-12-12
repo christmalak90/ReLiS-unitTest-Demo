@@ -50,7 +50,7 @@ class Unit_test extends CI_Controller
         require_once('relis_app/helpers/tests/testFiles/project/classification_install_demoTestProject.php');
 
         $this->load->helper('tests/helpers/hhhhdh'); //////////////
-        $this->load->helper('tests/helpers/unittest');
+        $this->load->helper('tests/helpers/uuuu');
         $this->load->helper('tests/helpers/helpfunctions');
         $this->load->helper('tests/userunittest');
         $this->load->helper('tests/projectunittest');

@@ -50,7 +50,7 @@ jobs:
             exit 1
 
           else
-            echo "The unit test has an error"
+            echo "The unit test has an error :"
             echo $response
             exit 1
           fi

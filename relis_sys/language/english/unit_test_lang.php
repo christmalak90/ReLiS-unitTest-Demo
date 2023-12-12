@@ -1,6 +1,4 @@
 <?php
-//////////////////////////////////////// NEW /////////////////////////////
-
 /**
  * CodeIgniter
  *
@@ -26,7 +24,7 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
@@ -37,19 +35,13 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') or exit('No direct script access allowed');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['ut_test_controller'] = 'Controller';
-$lang['ut_test_action'] = 'Action';
-$lang['ut_test_name'] = 'Test name';
-$lang['ut_test_aspect'] = 'Test aspect';
-$lang['ut_test_datatype'] = 'Actual datatype';
-$lang['ut_test_value'] = 'Actual result'; ////////////////////////////////// NEW ///////////////////////
-$lang['ut_res_datatype'] = 'Expected datatype';
-$lang['ut_res_value'] = 'Expected result'; ///////////////////////////////// NEW ////////////////////
-$lang['ut_result'] = 'Status';
-$lang['ut_http_response_code'] = 'Http response code';
-$lang['ut_undefined'] = 'Undefined';
+$lang['ut_test_name'] = 'Test Name';
+$lang['ut_test_datatype'] = 'Test Datatype';
+$lang['ut_res_datatype'] = 'Expected Datatype';
+$lang['ut_result'] = 'Result';
+$lang['ut_undefined'] = 'Undefined Test Name';
 $lang['ut_file'] = 'File Name';
 $lang['ut_line'] = 'Line Number';
 $lang['ut_passed'] = 'Passed';

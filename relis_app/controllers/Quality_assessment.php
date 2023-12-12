@@ -42,9 +42,9 @@ class Quality_assessment extends CI_Controller
 	}
 
 	/*
-						   function retrieves completion information for QA (Quality Assurance) or QA validation
-						   retrieves completion data, calculates completion percentages, and presents the information in a view for QA progress
-					  */
+						function retrieves completion information for QA (Quality Assurance) or QA validation
+						retrieves completion data, calculates completion percentages, and presents the information in a view for QA progress
+				   */
 	public function qa_completion($type = 'qa')
 	{
 		if ($type == 'validate') {
@@ -85,8 +85,8 @@ class Quality_assessment extends CI_Controller
 	}
 
 	/*
-						  responsible for setting up the assignment of papers for quality assessment validation.
-					  */
+					   responsible for setting up the assignment of papers for quality assessment validation.
+				   */
 	public function qa_assignment_validation_set($data = array())
 	{
 		//d
@@ -99,7 +99,7 @@ class Quality_assessment extends CI_Controller
 		$_assign_user = array();
 
 		foreach ($users['list'] as $key => $value) {
-			if ((user_project($this->session->userdata('project_id'), $value['user_id'])) and can_review_project($value['user_id']) and !has_user_role('Guest', $value['user_id'])) {
+			if ((user_project($this->session->userdata('project_id'), $value['user_id'])) and can_review_project($value['user_id']) and !has_user_role('Guest',$value['user_id'])) {
 
 				$_assign_user[$value['user_id']] = $value['user_name'];
 			}
@@ -133,7 +133,7 @@ class Quality_assessment extends CI_Controller
 		$users = $this->DBConnection_mdl->get_list($user_table_config, '_', 0, -1);
 		$_assign_user = array();
 		foreach ($users['list'] as $key => $value) {
-			if ((user_project($this->session->userdata('project_id'), $value['user_id'])) and can_review_project($value['user_id']) and !has_user_role('Guest', $value['user_id'])) {
+			if ((user_project($this->session->userdata('project_id'), $value['user_id'])) and can_review_project($value['user_id']) and !has_user_role('Guest',$value['user_id'])) {
 
 				$_assign_user[$value['user_id']] = $value['user_name'];
 			}
@@ -156,8 +156,8 @@ class Quality_assessment extends CI_Controller
 	}
 
 	/*
-						  retrieves the papers that are eligible for assignment in the quality assessment process. It returns an array containing the necessary information for assigning papers
-					  */
+					   retrieves the papers that are eligible for assignment in the quality assessment process. It returns an array containing the necessary information for assigning papers
+				   */
 	private function get_papers_for_qa()
 	{
 		//papers already assigned
@@ -705,7 +705,6 @@ class Quality_assessment extends CI_Controller
 			)
 				->row_array();
 			if (!empty($assignment['qa_validation_assignment_id'])) {
-				$this->db_current->update('qa_validation_assignment', array('validation' => 'Not Correct', 'validation_note' => '', 'validation_time' => bm_current_time()), array('paper_id' => $paper_id));
 				redirect('element/edit_element/qa_not_valid/' . $assignment['qa_validation_assignment_id']);
 			}
 			//$this->db_current->update('qa_validation_assignment',array('validation'=>'Not Correct'),array('paper_id'=>$paper_id));

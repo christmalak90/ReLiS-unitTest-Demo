@@ -661,7 +661,7 @@ class Paper extends CI_Controller
         if (!empty($classification)) {
             $classification_data = $this->get_reference_detail('classification', $classification[0]['class_id'], True);
             $data['classification_data'] = $classification_data;
-            $delete_button = get_top_button('delete', 'Remove the classification', 'data_extraction/remove_classification2/' . $classification[0]['class_id'] . "/" . $ref_id, 'Remove the classification') . " ";
+            $delete_button = get_top_button('delete', 'Remove the classification', 'data_extraction/remove_classification/' . $classification[0]['class_id'] . "/" . $ref_id . "/paper/view_paper", 'Remove the classification') . " ";
             $edit_button = get_top_button('edit', 'Edit the classification', 'data_extraction/edit_classification2/' . $classification[0]['class_id'], 'Edit the classification') . " ";
             $data['classification_button'] = $edit_button . " " . $delete_button;
         } else {
@@ -1645,6 +1645,15 @@ class Paper extends CI_Controller
         $this->load->view('shared/body', $data);
     }
 
+    /*
+     * Récuperation de la structure de la table
+     */
+    private function ref_table_config($_table)
+    {
+        //moved to library
+        return $this->table_ref_lib->ref_table_config($_table);
+    }
+
     //enables retrieving paper information and preview data from the Bibler web services and save the paper
     private function get_bibler_result($bibtex, $operation = "single")
     {
@@ -1695,7 +1704,7 @@ class Paper extends CI_Controller
                         $error = 0;
                         $year = !empty($Tres['entry']['year']) ? $Tres['entry']['year'] : "";
                         $paper_array['bibtexKey'] = str_replace('\\', '', $Tres['entry']['entrykey']);
-                        $title = !empty($value['entry']['title']) ? $value['entry']['title'] : "";
+                        $title = !empty($Tres['entry']['title']) ? $Tres['entry']['title'] : "";
                         $title = str_replace('{', '', $title);
                         $title = str_replace('\\', '', $title);
                         $paper_array['title'] = str_replace('}', '', $title);

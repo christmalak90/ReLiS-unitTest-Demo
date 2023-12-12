@@ -50,10 +50,10 @@ class Unit_test extends CI_Controller
         require_once('relis_app/helpers/tests/testFiles/project/classification_install_demoTestProject.php');
 
         $this->load->helper('tests/helpers/hhhhdh'); //////////////
-        $this->load->helper('tests/helpers/uuuu');
-        $this->load->helper('tests/helpers/hfff');
-        $this->load->helper('tests/uuss');
-        $this->load->helper('tests/projectunittest');
+        $this->load->helper('tests/helpers/uuuu'); //////////////
+        $this->load->helper('tests/helpers/hfff'); //////////////
+        $this->load->helper('tests/uuss'); ////////////////
+        $this->load->helper('tests/pppp'); ////////////
         // $this->load->helper('tests/paperunittest');
         // $this->load->helper('tests/screeningunittest');
         // $this->load->helper('tests/quality_assessmentunittest');

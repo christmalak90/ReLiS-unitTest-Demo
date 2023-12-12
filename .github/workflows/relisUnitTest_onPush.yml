@@ -51,8 +51,7 @@ jobs:
 
           else
             echo "The unit test has an error :"
-            error=$(php -r " echo error_get_last();")
-            echo $error 
+            echo $response
             exit 1
           fi
 

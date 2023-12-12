@@ -20,16 +20,16 @@ class ReportingUnitTest
         $this->TestInitialize();
         $this->resultGraph();
         $this->resultExport();
-        // $this->download();
-        // $this->result_export_classification();
-        // $this->result_export_excluded_class();
-        // $this->result_export_papers();
-        // $this->result_export_papers_bib();
-        // $this->result_export_papers_bib_included();
-        // $this->result_export_papers_bib_excluded();
-        // $this->result_export_excluded_screen();
-        // $this->r_export_configurations();
-        // $this->result_r_config_file();
+        $this->download();
+        $this->result_export_classification();
+        $this->result_export_excluded_class();
+        $this->result_export_papers();
+        $this->result_export_papers_bib();
+        $this->result_export_papers_bib_included();
+        $this->result_export_papers_bib_excluded();
+        $this->result_export_excluded_screen();
+        $this->r_export_configurations();
+        $this->result_r_config_file();
     }
 
     private function TestInitialize()

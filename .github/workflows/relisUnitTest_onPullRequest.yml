@@ -4,7 +4,7 @@ name: Relis unit test on pull request
 on:
   pull_request:
     branches:
-      - unit-test
+      - main
 
 jobs:
   relis_unit_testing_on_pull_request:

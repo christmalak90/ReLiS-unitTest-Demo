@@ -7,7 +7,7 @@ on:
       - unit-test
 
 jobs:
-  relis_unit_testing:
+  relis_unit_testing_on_push:
     runs-on: ubuntu-latest
 
     steps:

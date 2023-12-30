@@ -122,13 +122,13 @@ The implementation of the **main** branch protection system is achieved as follo
 - Click on `Create`
 
 - if the latest code push to the **develop** branch fails the unit test, the **Merge pull request** button will be disabled, preventing the initiation of the merge.
-[Merge 1](../../../cside/images/merge%20pull%20request1.png)
+![Merge 1](../../../cside/images/merge%20pull%20request1.png)
 
 
 - When a new push is made, the status check is restarted on the latest action workflow run
-[Merge 2](../../../cside/images/merge%20pull%20request2.png)
+![Merge 2](../../../cside/images/merge%20pull%20request2.png)
 
 - When the status check pass, the “merge pull request” button is activated to allow the merging.
-[Merge 3](../../../cside/images/merge%20pull%20request3.png)
+![Merge 3](../../../cside/images/merge%20pull%20request3.png)
 
 Changes made to the local repository will always be pushed to the **develop** branch, regardless of the success or failure of unit tests. However, the **main** branch will only permit code merging if the latest code push to the **develop** branch successfully passes the unit tests.

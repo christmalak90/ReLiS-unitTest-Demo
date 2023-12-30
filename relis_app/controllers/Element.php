@@ -1051,7 +1051,7 @@ class Element extends CI_Controller
                             //redirect ( 'paper/list_paper');
                             redirect('data_extraction/display_paper/' . $saved_res);
                         } else {
-                            redirect('manager/entity_list/' . $post_arr['table_config']);
+                            redirect('element/entity_list/' . $post_arr['table_config']);
                         }
                     }
                 }

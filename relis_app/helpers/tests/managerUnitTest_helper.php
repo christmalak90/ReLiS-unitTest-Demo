@@ -1,7 +1,7 @@
 <?php
-/////////////////////////////////////// NEW ////////////////////////////////////
+/////////////////////////////////////// NEW ///////////////////////////////////
 
-// TEST MANAGER CONTROLLER
+// TEST ELEMENT CONTROLLER
 class ManagerUnitTest
 {
     private $controller;
@@ -17,9 +17,49 @@ class ManagerUnitTest
 
     function run_tests()
     {
-        // $this->TestInitialize(); ///////////////////////////
-        // $this->listUsergroup();
-        $this->list();
+        $this->TestInitialize();
+        $this->displayStrEntry();
+        $this->edit_info();
+
+        $this->projectInitialize();
+        $this->listProjectConfig();
+        $this->displayUserprojectDetail();
+        $this->add_affiliation();
+        $this->add_author();
+        $this->add_exclusioncriteria();
+        $this->add_inclusioncriteria();
+        $this->add_info();
+        $this->add_paper();
+        $this->add_qa_questions();
+        $this->add_qa_responses();
+        $this->add_ref_brand();
+        $this->add_ref_variety();
+        $this->add_research_question();
+        $this->add_user();
+        $this->add_user_current_project();
+        $this->add_venue();
+        $this->edit_author();
+        $this->edit_exclusioncrieria();
+        $this->edit_paper();
+        $this->edit_qa_questions();
+        $this->edit_qa_responses();
+        $this->edit_ref_brand();
+        $this->edit_ref_variety();
+        $this->edit_screen_phase();
+        $this->edit_user();
+        $this->edit_venue();
+        $this->edit_assignment_class();
+        $this->edit_config_screening();
+        $this->edit_config_qa();
+        $this->edit_config_class();
+        $this->edit_conf_papers();
+        $this->edit_project();
+        $this->update_screening_config();
+        $this->update_qa_config();
+        $this->update_class_config();
+        $this->cancel_operation();
+        $this->undo_cancel_operation();
+        $this->clear_logs();
     }
 
     private function TestInitialize()
@@ -34,6 +74,11 @@ class ManagerUnitTest
         $this->http_client->response("user", "check_form", ['user_username' => 'admin', 'user_password' => '123'], "POST");
         //create test user
         addTestUser();
+    }
+
+    private function projectInitialize()
+    {
+        //create demo project
         createDemoProject();
         //add 5 papers to test Project
         addBibtextPapersToProject("relis_app/helpers/tests/testFiles/paper/5_bibPapers.bib");
@@ -52,19 +97,19 @@ class ManagerUnitTest
     }
 
     /*
-     * Test 1
-     * Action : entity_list
-     * Description : display the list of usergroups
-     * Expected value: check if the correct elements are displayed
+     * Test 4
+     * Action : display_element
+     * Description : display string management entry
+     * Expected value: check if the correct element is displayed
      */
-    private function listUsergroup()
+    private function displayStrEntry()
     {
-        $action = "entity_list";
-        $test_name = "display the list of usergroups";
-        $test_aspect = "Correct element(s) displayed?";
+        $action = "display_element";
+        $test_name = "display string management entry";
+        $test_aspect = "Correct element displayed?";
         $expected_value = "Yes";
 
-        $response = $this->http_client->response($this->controller, $action . "/usergroup");
+        $response = $this->http_client->response($this->controller, $action . "/detail_str_mng/1");
 
         //follow redirect
         while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
@@ -76,17 +121,11 @@ class ManagerUnitTest
         } else {
             $actual_value = "No";
 
-            //get all entries in the db
-            $data = $this->ci->db->query("SELECT * FROM usergroup")->result_array();
+            //get entry in the db
+            $data = $this->ci->db->query("SELECT * FROM str_management WHERE str_id = 1")->row_array();
 
-            //check if all entries are listed
-            $entriesListed = [];
-            foreach ($data as $dt) {
-                if (strstr($response['content'], $dt['usergroup_name']) != false) {
-                    array_push($entriesListed, $dt);
-                }
-            }
-            if (count($entriesListed) == count($data)) {
+            //check if entry is listed
+            if (strstr($response['content'], $data['str_label']) != false) {
                 $actual_value = "Yes";
             }
         }
@@ -95,328 +134,1194 @@ class ManagerUnitTest
     }
 
     /*
-     * Test 2 ////////////////////////////////
-     * Action : entity_list
-     * Description : display the list of usergroups /////////////////////////
-     * Expected value: check if the correct elements are displayed
+     * Test 8
+     * Action : edit_element
+     * Description : display form for editing info
      */
-    private function list() ////////////////////////
+    private function edit_info()
     {
-        $urlsString = "";
+        $action = "edit_element";
+        $test_name = "display form for editing info";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
 
-        $urls = findUrlWithWord("relis_app/helpers/tests/testFiles/demoDraft/draft.html", ['element', 'manager']);
+        $response = $this->http_client->response($this->controller, $action . "/edit_info/1");
 
-        foreach ($urls as $url) {
-            $urlsString = $urlsString . "<br>" . $url;
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
         }
 
-        run_test("", "", "", "", "", $urlsString);
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
     }
-
-
-    private $element = [
-        'users',
-        'new_users',
-        'user_creation',
-        'usergroup',
-        'project',
-        'user_project',
-        'config_admin',
-        'config',
-        'exclusioncrieria',
-        'inclusioncriteria',
-        'research_question',
-        'affiliation',
-        'papers_sources',
-        'search_strategy',
-        'papers',
-        'author',
-        'paper_author',
-        'venue',
-        'screen_phase',
-        'screening',
-        'screen_decison',
-        'logs',
-        'info',
-        'str_mng',
-        'operations',
-        'qa_questions',
-        'qa_responses',
-        'qa_result',
-        'qa_assignment',
-        'qa_validation_assignment',
-        'assignation',
-        'debug',
-        'exclusion',
-        'inclusion'
-    ]; /////////////////////////////////
-
-
-
 
     /*
-     * Fonction globale pour afficher la liste des élément suivant la structure de la table
-     *
-     * Input: $ref_table: nom de la configuration d'une page (ex papers, author)
-     * 			$val : valeur de recherche si une recherche a été faite sur la table en cours
-     * 			$page: la page affiché : ulilisé dans la navigation
+     * Test 12
+     * Action : display_element
+     * Description : display project configuration
+     * Expected value: check if the correct element is displayed
      */
-    public function entity_list($ref_table, $val = "_", $page = 0, $dynamic_table = 0)
+    private function listProjectConfig()
     {
-        /*
-         * Vérification si il y a une condition de recherche
-         */
-        $val = urldecode(urldecode($val));
-        $filter = array();
-        if (isset($_POST['search_all'])) {
-            $filter = $this->input->post();
-            unset($filter['search_all']);
-            $val = "_";
-            if (isset($filter['valeur']) and !empty($filter['valeur'])) {
-                $val = $filter['valeur'];
-                $val = urlencode(urlencode($val));
-            }
-            /*
-             * mis à jours de l'url en ajoutant la valeur recherché dans le lien puis rechargement de l'url
-             */
-            $url = "manager/entity_list/" . $ref_table . "/" . $val . "/0/";
-            redirect($url);
+        $action = "display_element";
+        $test_name = "display project configuration";
+        $test_aspect = "Correct element displayed?";
+        $expected_value = "Yes";
+        $actual_value = "No";
+
+        $response = $this->http_client->response($this->controller, $action . "/configurations/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
         }
-        /*
-         * Récupération de la configuration(structure) de la table à afficher
-         */
-        $ref_table_config = get_table_config($ref_table);
-        $table_id = $ref_table_config['table_id'];
-        /*
-         * Appel du model pour récupérer la liste à aficher dans la Base de donnés
-         */
-        $rec_per_page = ($dynamic_table) ? -1 : 0;
-        if ($ref_table == "str_mng") { //pour le string_management une fonction spéciale
-            //todo verifier comment le spécifier dans config
-            $data = $this->DBConnection_mdl->get_list_str_mng($ref_table_config, $val, $page, $rec_per_page, $this->session->userdata('active_language'));
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            $data = $this->DBConnection_mdl->get_list($ref_table_config, $val, $page, $rec_per_page);
+            $actual_value = "Yes";
         }
-        //print_test($data);
-        /*
-         * récupération des correspondances des clés externes pour l'affichage  suivant la structure de la table
-         */
-        $dropoboxes = array();
-        foreach ($ref_table_config['fields'] as $k => $v) {
-            if (!empty($v['input_type']) and $v['input_type'] == 'select' and $v['on_list'] == 'show') {
-                if ($v['input_select_source'] == 'array') {
-                    $dropoboxes[$k] = $v['input_select_values'];
-                } elseif ($v['input_select_source'] == 'table') {
-                    //print_test($v);
-                    $dropoboxes[$k] = $this->manager_lib->get_reference_select_values($v['input_select_values']);
-                } elseif ($v['input_select_source'] == 'yes_no') {
-                    $dropoboxes[$k] = array(
-                        '0' => "No",
-                        '1' => "Yes"
-                    );
-                }
-            }
-        }
-        /*
-         * Vérification des liens (links) a afficher sur la liste
-         */
-        $list_links = array();
-        $add_link = false;
-        $add_link_url = "";
-        foreach ($ref_table_config['links'] as $link_type => $link) {
-            if (!empty($link['on_list'])) { {
-                    $link['type'] = $link_type;
-                    if (empty($link['title'])) {
-                        $link['title'] = lng_min($link['label']);
-                    }
-                    $push_link = false;
-                    switch ($link_type) {
-                        case 'add':
-                            $add_link = true; //will appear as a top button
-                            if (empty($link['url']))
-                                $add_link_url = 'manager/add_element/' . $ref_table;
-                            else
-                                $add_link_url = $link['url'];
-                            break;
-                        case 'view':
-                            if (!isset($link['icon']))
-                                $link['icon'] = 'folder';
-                            if (empty($link['url']))
-                                $link['url'] = 'manager/display_element/' . $ref_table . '/';
-                            $push_link = true;
-                            break;
-                        case 'edit':
-                            if (!isset($link['icon']))
-                                $link['icon'] = 'pencil';
-                            if (empty($link['url']))
-                                $link['url'] = 'manager/edit_element/' . $ref_table . '/';
-                            $push_link = true;
-                            break;
-                        case 'delete':
-                            if (!isset($link['icon']))
-                                $link['icon'] = 'trash';
-                            if (empty($link['url']))
-                                $link['url'] = 'manager/delete_element/' . $ref_table . '/';
-                            $push_link = true;
-                            break;
-                        case 'add_child':
-                            if (!isset($link['icon']))
-                                $link['icon'] = 'plus';
-                            if (!empty($link['url'])) {
-                                $link['url'] = 'manager/add_element_child/' . $link['url'] . "/" . $ref_table . "/";
-                                $push_link = true;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    if ($push_link)
-                        array_push($list_links, $link);
-                }
-            }
-        }
-        /*
-         * Préparation de la liste à afficher sur base du contenu et  stucture de la table
-         */
-        /**
-         * @var array $field_list va contenir les champs à afficher 
-         */
-        $field_list = array();
-        $field_list_header = array();
-        foreach ($ref_table_config['fields'] as $k => $v) {
-            if ($v['on_list'] == 'show') {
-                array_push($field_list, $k);
-                array_push($field_list_header, $v['field_title']);
-            }
-        }
-        //print_test($field_list);
-        $i = 1;
-        $list_to_display = array();
-        foreach ($data['list'] as $key => $value) {
-            $element_array = array();
-            foreach ($field_list as $key_field => $v_field) {
-                if (isset($value[$v_field])) {
-                    if (isset($dropoboxes[$v_field][$value[$v_field]])) {
-                        $element_array[$v_field] = $dropoboxes[$v_field][$value[$v_field]];
-                    } else {
-                        $element_array[$v_field] = $value[$v_field];
-                    }
-                } else {
-                    $element_array[$v_field] = "";
-                    if (isset($ref_table_config['fields'][$v_field]['number_of_values']) and $ref_table_config['fields'][$v_field]['number_of_values'] != 1) {
-                        if (isset($ref_table_config['fields'][$v_field]['input_select_values']) and isset($ref_table_config['fields'][$v_field]['input_select_key_field'])) {
-                            // récuperations des valeurs de cet element
-                            $M_values = $this->manager_lib->get_element_multi_values($ref_table_config['fields'][$v_field]['input_select_values'], $ref_table_config['fields'][$v_field]['input_select_key_field'], $data['list'][$key][$table_id]);
-                            $S_values = "";
-                            foreach ($M_values as $k_m => $v_m) {
-                                if (isset($dropoboxes[$v_field][$v_m])) {
-                                    $M_values[$k_m] = $dropoboxes[$v_field][$v_m];
-                                }
-                                $S_values .= empty($S_values) ? $M_values[$k_m] : " | " . $M_values[$k_m];
-                            }
-                            $element_array[$v_field] = $S_values;
-                        }
-                    }
-                }
-            }
-            /*
-             * Ajout des liens(links) sur la liste
-             */
-            $action_button = "";
-            $arr_buttons = array();
-            foreach ($list_links as $key_l => $value_l) {
-                if (!empty($value_l['icon']))
-                    $value_l['label'] = icon($value_l['icon']) . ' ' . lng_min($value_l['label']);
-                array_push(
-                    $arr_buttons,
-                    array(
-                        'url' => $value_l['url'] . $value[$table_id],
-                        'label' => $value_l['label'],
-                        'title' => $value_l['title']
-                    )
-                );
-            }
-            $action_button = create_button_link_dropdown($arr_buttons, lng_min('Action'));
-            if (!empty($action_button))
-                $element_array['links'] = $action_button;
-            if (isset($element_array[$table_id])) {
-                $element_array[$table_id] = $i + $page;
-            }
-            array_push($list_to_display, $element_array);
-            $i++;
-        }
-        $data['list'] = $list_to_display;
-        /*
-         * Ajout de l'entête de la liste
-         */
-        if (!empty($data['list'])) {
-            //$array_header=$ref_table_config['header_list_fields'];
-            $array_header = $field_list_header;
-            if (!empty($data['list'][$key]['links'])) {
-                array_push($array_header, '');
-            }
-            if (!$dynamic_table) {
-                array_unshift($data['list'], $array_header);
-            } else {
-                $data['list_header'] = $array_header;
-            }
-        }
-        /*
-         * Création des boutons qui vont s'afficher en haut de la page (top_buttons)
-         */
-        $data['top_buttons'] = "";
-        if ($ref_table == "str_mng") { //todo à corriger
-            if ($this->session->userdata('language_edit_mode') == 'yes') {
-                $data['top_buttons'] .= get_top_button('all', 'Close edition mode', 'config/update_edition_mode/no', 'Close edition mode', 'fa-ban', '', ' btn-warning ');
-            } else {
-                $data['top_buttons'] .= get_top_button('all', 'Open edition mode', 'config/update_edition_mode/yes', 'Open edition mode', 'fa-check', '', ' btn-dark ');
-            }
-        } else {
-            if ($add_link)
-                $data['top_buttons'] .= get_top_button('add', 'Add new', $add_link_url);
-        }
-        if (activate_update_stored_procedure())
-            $data['top_buttons'] .= get_top_button('all', 'Update stored procedure', 'home/update_stored_procedure/' . $ref_table, 'Update stored procedure', 'fa-check', '', ' btn-dark ');
-        if ($this->session->userdata('working_perspective') == 'class') {
-            $data['top_buttons'] .= get_top_button('close', 'Close', 'home');
-        } else {
-            $data['top_buttons'] .= get_top_button('close', 'Close', 'screening/screening');
-        }
-        /*
-         * Titre de la page
-         */
-        if (isset($ref_table_config['entity_title']['list'])) {
-            $data['page_title'] = lng($ref_table_config['entity_title']['list']);
-        } else {
-            $data['page_title'] = lng("List of " . $ref_table_config['reference_title']);
-        }
-        /*
-         * Configuration pour l'affichage des lien de navigation
-         */
-        $data['valeur'] = ($val == "_") ? "" : $val;
-        /*
-         * Si on a besoin de faire urecherche sur la liste specifier la vue où se trouve le formulaire de recherche
-         */
-        if (!$dynamic_table and !empty($ref_table_config['search_by'])) {
-            $data['search_view'] = 'general/search_view';
-        }
-        /*
-         * La vue qui va s'afficher
-         */
-        if (!$dynamic_table) {
-            $data['nav_pre_link'] = 'manager/entity_list/' . $ref_table . '/' . $val . '/';
-            $data['nav_page_position'] = 5;
-            $data['page'] = 'general/list';
-        } else {
-            $data['page'] = 'general/list_dt';
-        }
-        if (admin_config($ref_table))
-            $data['left_menu_admin'] = True;
-        //print_test($data);
-        /*
-         * Chargement de la vue avec les données préparés dans le controleur
-         */
-        $this->load->view('shared/body', $data);
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
     }
 
+    /*
+     * Test 17
+     * Action : display_element
+     * Description : display user-project detail
+     * Expected value: check if the correct element is displayed
+     */
+    private function displayUserprojectDetail()
+    {
+        $action = "display_element";
+        $test_name = "display user-project detail";
+        $test_aspect = "Correct element displayed?";
+        $expected_value = "Yes";
+
+        $userProject = $this->ci->db->query("SELECT * FROM userproject WHERE project_id = " . getProjectId() . " LIMIT 1")->row_array();
+        $response = $this->http_client->response($this->controller, $action . "/detail_userproject/" . $userProject['userproject_id']);
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = "No";
+
+            //get entry in the db
+            $project = $this->ci->db->query("SELECT * FROM projects WHERE project_id = " . $userProject['project_id'])->row_array();
+
+            //check if entry is listed
+            if (strstr($response['content'], $project['project_title']) != false) {
+                $actual_value = "Yes";
+            }
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 53
+     * Action : add_element
+     * Description : display form for adding author affiliation
+     */
+    private function add_affiliation()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding author affiliation";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_affiliation");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 54
+     * Action : add_element
+     * Description : display form for adding author
+     */
+    private function add_author()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding author";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_author");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 55
+     * Action : add_element
+     * Description : display form for adding exclusion criteria
+     */
+    private function add_exclusioncriteria()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding exclusion criteria";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_exclusioncrieria");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 56
+     * Action : add_element
+     * Description : display form for adding inclusion criteria
+     */
+    private function add_inclusioncriteria()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding inclusion criteria";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_inclusioncriteria");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 57
+     * Action : add_element
+     * Description : display form for adding info
+     */
+    private function add_info()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding info";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_info");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 58
+     * Action : add_element
+     * Description : display form for adding paper
+     */
+    private function add_paper()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding paper";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_paper");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 59
+     * Action : add_element
+     * Description : display form for adding qa question
+     */
+    private function add_qa_questions()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding qa question";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_qa_questions");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 60
+     * Action : add_element
+     * Description : display form for adding qa response
+     */
+    private function add_qa_responses()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding qa response";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_qa_responses");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 61
+     * Action : add_element
+     * Description : display form for adding ref brand
+     */
+    private function add_ref_brand()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding ref brand";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_ref_brand");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 62
+     * Action : add_element
+     * Description : display form for adding ref variety
+     */
+    private function add_ref_variety()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding ref variety";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_ref_variety");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 63
+     * Action : add_element
+     * Description : display form for adding research question
+     */
+    private function add_research_question()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding research question";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_research_question");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 64
+     * Action : add_element
+     * Description : display form for adding screen phase
+     */
+    private function add_screen_phase()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding screen phase";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_screen_phase");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 65
+     * Action : add_element
+     * Description : display form for adding user
+     */
+    private function add_user()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding user";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_user");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 66
+     * Action : add_element
+     * Description : display form for adding user to project
+     */
+    private function add_user_current_project()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding user to project";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_user_current_project");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 67
+     * Action : add_element
+     * Description : display form for adding venue
+     */
+    private function add_venue()
+    {
+        $action = "add_element";
+        $test_name = "display form for adding venue";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/add_venue");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 70
+     * Action : edit_element
+     * Description : display form for editing author
+     */
+    private function edit_author()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing author";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_author/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 71
+     * Action : edit_element
+     * Description : display form for editing exclusion criteria
+     */
+    private function edit_exclusioncrieria()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing exclusion criteria";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_exclusioncrieria/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 72
+     * Action : edit_element
+     * Description : display form for editing paper
+     */
+    private function edit_paper()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing paper";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_paper/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 73
+     * Action : edit_element
+     * Description : display form for editing qa question
+     */
+    private function edit_qa_questions()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing qa question";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_qa_questions/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 74
+     * Action : edit_element
+     * Description : display form for editing qa response
+     */
+    private function edit_qa_responses()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing qa response";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_qa_responses/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 75
+     * Action : edit_element
+     * Description : display form for editing ref brand
+     */
+    private function edit_ref_brand()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing ref brand";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_ref_brand/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 76
+     * Action : edit_element
+     * Description : display form for editing ref variety
+     */
+    private function edit_ref_variety()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing ref variety";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_ref_variety/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 77
+     * Action : edit_element
+     * Description : display form for editing screen phase
+     */
+    private function edit_screen_phase()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing screen phase";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_screen_phase/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 78
+     * Action : edit_element
+     * Description : display form for editing user
+     */
+    private function edit_user()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing user";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_user/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 79
+     * Action : edit_element
+     * Description : display form for editing venue
+     */
+    private function edit_venue()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing venue";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_venue/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 80
+     * Action : edit_element
+     * Description : display form for editing classification assignation to a paper
+     */
+    private function edit_assignment_class()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing classification assignation to a paper";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_assignment_class/2");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 81
+     * Action : edit_element
+     * Description : display form for editing screening config
+     */
+    private function edit_config_screening()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing screening config";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_config_screening/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 82
+     * Action : edit_element
+     * Description : display form for editing QA config
+     */
+    private function edit_config_qa()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing QA config";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_config_qa/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 83
+     * Action : edit_element
+     * Description : display form for editing classification config
+     */
+    private function edit_config_class()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing classification config";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_config_class/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 84
+     * Action : edit_element
+     * Description : display form for editing papers config
+     */
+    private function edit_conf_papers()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing papers config";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_conf_papers/1");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 85
+     * Action : edit_element
+     * Description : display form for editing project
+     */
+    private function edit_project()
+    {
+        $action = "edit_element";
+        $test_name = "display form for editing project";
+        $test_aspect = "Response code";
+        $expected_value = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action . "/edit_project/" . getProjectId());
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = http_code()[200];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 98
+     * Action : save_element
+     * Description : update screening config 
+     * Expected result: check if the element is updated in the DB
+     */
+    private function update_screening_config()
+    {
+        $action = "save_element";
+        $test_name = "update screening config";
+        $test_aspect = "is element updated? (1 = Yes, 0 = No)";
+        $expected_value = '1';
+        $actual_value = '0';
+
+        $postData = array(
+            'operation_type' => 'edit',
+            'table_config' => 'config',
+            'current_operation' => 'edit_config_screening',
+            'redirect_after_save' => 'element/display_element/configurations/1',
+            'operation_source' => 'own',
+            'child_field' => '',
+            'table_config_parent' => '',
+            'parent_id' => '',
+            'parent_field' => '',
+            'parent_table' => '',
+            'config_id' => 1,
+            'screening_on' => array(0, 1),
+            'screening_result_on' => array(0, 1),
+            'assign_papers_on' => array(0, 1),
+            'screening_reviewer_number' => 2,
+            'screening_conflict_type' => 'ExclusionCriteria',
+            'screening_screening_conflict_resolution' => 'Unanimity',
+            'use_kappa' => array(0, 1),
+            'screening_validation_on' => array(0, 1),
+            'screening_validator_assignment_type' => 'Normal',
+            'validation_default_percentage' => 50
+        );
+
+        $response = $this->http_client->response($this->controller, $action, $postData, "POST");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = '1';
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 99
+     * Action : save_element
+     * Description : update qa config 
+     * Expected result: check if the element is updated in the DB
+     */
+    private function update_qa_config()
+    {
+        $action = "save_element";
+        $test_name = "update qa config";
+        $test_aspect = "is element updated? (1 = Yes, 0 = No)";
+        $expected_value = '1';
+        $actual_value = '0';
+
+        $postData = array(
+            'operation_type' => 'edit',
+            'table_config' => 'config',
+            'current_operation' => 'edit_config_qa',
+            'redirect_after_save' => 'element/display_element/configurations/1',
+            'operation_source' => 'own',
+            'child_field' => '',
+            'table_config_parent' => '',
+            'parent_id' => '',
+            'parent_field' => '',
+            'parent_table' => '',
+            'config_id' => 1,
+            'qa_on' => array(0, 1),
+            'qa_cut_off_score' => 5,
+            'qa_validation_on' => array(0, 1),
+            'qa_validation_default_percentage' => 100
+        );
+
+        $response = $this->http_client->response($this->controller, $action, $postData, "POST");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = '1';
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 100
+     * Action : save_element
+     * Description : update classification config 
+     * Expected result: check if the element is updated in the DB
+     */
+    private function update_class_config()
+    {
+        $action = "save_element";
+        $test_name = "update classification config";
+        $test_aspect = "is element updated? (1 = Yes, 0 = No)";
+        $expected_value = '1';
+        $actual_value = '0';
+
+        $postData = array(
+            'operation_type' => 'edit',
+            'table_config' => 'config',
+            'current_operation' => 'edit_config_class',
+            'redirect_after_save' => 'element/display_element/configurations/1',
+            'operation_source' => 'own',
+            'child_field' => '',
+            'table_config_parent' => '',
+            'parent_id' => '',
+            'parent_field' => '',
+            'parent_table' => '',
+            'config_id' => 1,
+            'class_validation_on' => array(0, 1),
+            'class_validation_default_percentage' => 80
+        );
+
+        $response = $this->http_client->response($this->controller, $action, $postData, "POST");
+
+        //follow redirect
+        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
+            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
+        }
+
+        if ($response['status_code'] != http_code()[200]) {
+            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_value = '1';
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
+    }
+
+    /*
+     * Test 6
+     * Action : cancel_operation
+     * Description : cancel operation and update the operation state in the database
+     * Expected operation state in DB: Cancelled
+     */
+    private function cancel_operation()
+    {
+        $action = "cancel_operation";
+        $test_name = "Cancel operation and update the operation state in the database";
+        $test_aspect_operationState = "Operation state in DB";
+        $expected_operationState = "Cancelled";
+
+        $response = $this->http_client->response($this->controller, $action . "/3");
+
+        if ($response['status_code'] >= 400) {
+            $actual_operationState = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_operationState = $this->ci->db->query("SELECT operation_state FROM relis_dev_correct_" . getProjectShortName() . ".operations WHERE operation_id =3")->row_array()['operation_state'];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect_operationState, $expected_operationState, $actual_operationState);
+    }
+
+    /*
+     * Test 6
+     * Action : undo_cancel_operation
+     * Description : undo cancel operation and update the operation state in the database
+     * Expected operation state in DB: Active
+     */
+    private function undo_cancel_operation()
+    {
+        $action = "undo_cancel_operation";
+        $test_name = "Undo cancel operation and update the operation state in the database";
+        $test_aspect_operationState = "Operation state in DB";
+        $expected_operationState = "Active";
+
+        $response = $this->http_client->response($this->controller, $action . "/3");
+
+        if ($response['status_code'] >= 400) {
+            $actual_operationState = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_operationState = $this->ci->db->query("SELECT operation_state FROM relis_dev_correct_" . getProjectShortName() . ".operations WHERE operation_id =3")->row_array()['operation_state'];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect_operationState, $expected_operationState, $actual_operationState);
+    }
+
+    /*
+     * Test 6
+     * Action : clear_logs
+     * Description : clear log entries
+     * Expected log states in DB: 0
+     */
+    private function clear_logs()
+    {
+        $action = "clear_logs";
+        $test_name = "clear log entries";
+        $test_aspect_logStates = "Log states in DB";
+        $expected_logStates = "Cleared";
+        $actual_logStates = "Not cleared";
+
+        $response = $this->http_client->response($this->controller, $action);
+
+        if ($response['status_code'] >= 400) {
+            $actual_logStates = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $states = $this->ci->db->query("SELECT log_active FROM log WHERE log_active =1")->result_array();
+
+            if (empty($states)) {
+                $actual_logStates = "Cleared";
+            }
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect_logStates, $expected_logStates, $actual_logStates);
+    }
 }
+
+
+

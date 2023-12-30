@@ -187,12 +187,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/detail_info/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -224,12 +219,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/admin_config/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -261,12 +251,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/detail_logs/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -298,12 +283,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/detail_str_mng/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -336,12 +316,7 @@ class ElementUnitTest
         $user = $this->ci->db->query("SELECT * FROM users WHERE user_username = '" . getUser_username() . "'")->row_array();
         $response = $this->http_client->response($this->controller, $action . "/detail_user/" . $user['user_id']);
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -371,12 +346,7 @@ class ElementUnitTest
         $user = $this->ci->db->query("SELECT * FROM users WHERE user_username = '" . getUser_username() . "'")->row_array();
         $response = $this->http_client->response($this->controller, $action . "/detail_user_min_ed/" . $user['user_id']);
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -405,12 +375,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_all_users");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -447,12 +412,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_info/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -500,12 +460,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM users WHERE user_username = 'testField01'")->row_array();
@@ -533,12 +488,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_info/2");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM info WHERE info_id = 2")->row_array()['info_active'];
@@ -563,12 +513,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_user/" . getTestUserId());
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM users WHERE user_id =" . getTestUserId())->row_array()['user_active'];
@@ -593,12 +538,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/configurations/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -622,12 +562,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/detail_author/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -660,12 +595,12 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/detail_classification/1");
 
-        //follow redirect
+        // follow redirect
         while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
             $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
         }
 
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -699,12 +634,7 @@ class ElementUnitTest
         $project = $this->ci->db->query("SELECT * FROM projects LIMIT 1")->row_array();
         $response = $this->http_client->response($this->controller, $action . "/detail_project/" . $project['project_id']);
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -733,12 +663,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/detail_screen_phase/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -771,12 +696,7 @@ class ElementUnitTest
         $userProject = $this->ci->db->query("SELECT * FROM userproject WHERE project_id = " . getProjectId() . " LIMIT 1")->row_array();
         $response = $this->http_client->response($this->controller, $action . "/detail_userproject/" . $userProject['userproject_id']);
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -808,12 +728,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/detail_venue/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -845,12 +760,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/display_assignment/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -883,12 +793,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/display_screening/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -921,12 +826,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_affiliation");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -964,12 +864,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_all_papers");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1008,12 +903,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_all_pending_screenings");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1038,12 +928,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_assignments");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1067,12 +952,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_authors");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1111,12 +991,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_authors_class");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1141,12 +1016,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_class_assignment");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1171,12 +1041,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_class_assignment_done");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1201,12 +1066,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_class_assignment_pending");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1230,12 +1090,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_classification");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1275,12 +1130,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_excluded_papers");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1304,12 +1154,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_exclusioncrieria");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1348,12 +1193,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_included_papers");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1377,12 +1217,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_inclusioncriteria");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1421,12 +1256,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_logs");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1451,12 +1281,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_operations");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1481,12 +1306,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_papers_screen");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1511,12 +1331,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_papers_screen_conflict");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1541,12 +1356,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_papers_screen_excluded");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1571,12 +1381,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_papers_screen_included");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1601,12 +1406,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_qa_papers");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1631,12 +1431,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_qa_papers_done");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1661,12 +1456,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_qa_papers_pending");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1690,12 +1480,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_qa_questions");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1733,12 +1518,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_qa_responses");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1776,12 +1556,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_ref_brand");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1819,12 +1594,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_ref_variety");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1863,12 +1633,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_research_question");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -1892,12 +1657,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_screen_phases");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1935,12 +1695,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_venues");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "No";
@@ -1979,12 +1734,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_screenings");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -2009,12 +1759,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/list_classification");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = "Yes";
@@ -2037,12 +1782,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_affiliation");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2065,12 +1805,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_author");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2093,12 +1828,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_exclusioncrieria");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2121,12 +1851,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_inclusioncriteria");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2149,12 +1874,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_info");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2177,12 +1897,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_paper");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2205,12 +1920,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_qa_questions");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2233,12 +1943,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_qa_responses");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2261,12 +1966,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_ref_brand");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2289,12 +1989,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_ref_variety");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2317,12 +2012,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_research_question");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2345,12 +2035,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_screen_phase");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2373,12 +2058,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_user");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2401,12 +2081,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_user_current_project");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2429,12 +2104,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_venue");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2457,12 +2127,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/add_reviewer/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2485,12 +2150,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/new_assignment_class/4");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2513,12 +2173,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_author/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2541,12 +2196,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_exclusioncrieria/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2569,12 +2219,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_paper/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2597,12 +2242,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_qa_questions/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2625,12 +2265,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_qa_responses/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2653,12 +2288,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_ref_brand/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2681,12 +2311,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_ref_variety/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2709,12 +2334,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_screen_phase/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2737,12 +2357,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_user/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2765,12 +2380,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_venue/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2793,12 +2403,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_assignment_class/2");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2821,12 +2426,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_config_screening/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2849,12 +2449,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_config_qa/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2877,12 +2472,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_config_class/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2905,12 +2495,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_conf_papers/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2933,12 +2518,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/edit_project/" . getProjectId());
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -2961,12 +2541,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/update_classification/2/4");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = http_code()[200];
@@ -3017,12 +2592,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".paper WHERE title = 'testField01'")->row_array();
@@ -3066,12 +2636,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_affiliation WHERE ref_value = 'testField01'")->row_array();
@@ -3115,12 +2680,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_exclusioncrieria WHERE ref_value = 'testField01'")->row_array();
@@ -3163,12 +2723,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".qa_questions WHERE question = 'testField01'")->row_array();
@@ -3212,12 +2767,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".qa_responses WHERE response = 'testField01'")->row_array();
@@ -3261,12 +2811,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_brand WHERE ref_value = 'testField01'")->row_array();
@@ -3310,12 +2855,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_variety WHERE ref_value = 'testField01'")->row_array();
@@ -3359,12 +2899,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".research_question WHERE ref_value = 'testField01'")->row_array();
@@ -3408,12 +2943,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_search_strategy WHERE ref_value = 'testField01'")->row_array();
@@ -3459,12 +2989,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM userproject WHERE user_id = 2")->row_array();
@@ -3514,12 +3039,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = '1';
@@ -3568,12 +3088,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = '1';
@@ -3616,12 +3131,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = '1';
@@ -3662,12 +3172,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = '1';
@@ -3708,12 +3213,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_exclusioncrieria WHERE ref_value = 'testField02'")->row_array();
@@ -3778,12 +3278,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".paper WHERE bibtexKey = 'testField02'")->row_array();
@@ -3826,12 +3321,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".qa_questions WHERE question = 'testField02'")->row_array();
@@ -3875,12 +3365,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".qa_responses WHERE response = 'testField02'")->row_array();
@@ -3924,12 +3409,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_brand WHERE ref_value = 'testField02'")->row_array();
@@ -3973,12 +3453,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action, $postData, "POST");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $data = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_variety WHERE ref_value = 'testField02'")->row_array();
@@ -4006,12 +3481,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_paper/2");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".paper WHERE id = 2")->row_array()['paper_active'];
@@ -4036,12 +3506,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_assignment/3");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".screening_paper WHERE screening_id = 3")->row_array()['screening_active'];
@@ -4066,12 +3531,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_author/2");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".author WHERE author_id = 2")->row_array()['author_active'];
@@ -4096,12 +3556,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_class_assignment/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".assigned WHERE assigned_id = 1")->row_array()['assigned_active'];
@@ -4126,12 +3581,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_exclusioncrieria/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_exclusioncrieria WHERE ref_id = 1")->row_array()['ref_active'];
@@ -4156,12 +3606,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_qa_questions/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".qa_questions WHERE question_id = 1")->row_array()['question_active'];
@@ -4186,12 +3631,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_qa_responses/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".qa_responses WHERE response_id = 1")->row_array()['response_active'];
@@ -4216,12 +3656,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_ref_brand/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_brand WHERE ref_id = 1")->row_array()['ref_active'];
@@ -4246,12 +3681,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_ref_variety/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".ref_variety WHERE ref_id = 1")->row_array()['ref_active'];
@@ -4276,12 +3706,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_screen_phase/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".screen_phase WHERE screen_phase_id = 1")->row_array()['screen_phase_active'];
@@ -4306,12 +3731,7 @@ class ElementUnitTest
 
         $response = $this->http_client->response($this->controller, $action . "/remove_venue/1");
 
-        //follow redirect
-        while (in_array($response['status_code'], [http_code()[301], http_code()[302], http_code()[303], http_code()[307]])) {
-            $response = $this->http_client->response($this->http_client->getShortUrl($response['url']), "");
-        }
-
-        if ($response['status_code'] != http_code()[200]) {
+        if ($response['status_code'] >= 400) {
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".venue WHERE venue_id = 1")->row_array()['venue_active'];

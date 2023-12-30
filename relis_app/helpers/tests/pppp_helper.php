@@ -81,7 +81,7 @@ class ProjectUnitTest
      */
     private function projectList()
     {
-        $action = "projects_listtttt"; /////////
+        $action = "projects_list";
         $test_name = "Display the list of installed projects";
         $test_aspect = "Http response code";
         $expected_value = http_code()[200];

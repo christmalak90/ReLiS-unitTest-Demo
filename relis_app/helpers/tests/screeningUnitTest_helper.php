@@ -34,6 +34,7 @@ class ScreeningUnitTest
         $this->saveAssignment_6papers_3reviewers();
         $this->saveAssignment_5papers_3reviewers();
         $this->saveAssignment_5papers_2reviewers();
+        $this->saveScreening_InclusionField();
         $this->saveAssignment_5papers_2reviewers_2reviewsPerPaper();
         $this->displayPapersForScreen();
         $this->displayPaperNotScreenedYet();
@@ -769,6 +770,32 @@ class ScreeningUnitTest
 
     /*
      * Test 17
+     * Action : save_screening
+     * Description : Save the screening inclusion decision made for a paper with inclusion criteria field.
+     * Expected screening details: check the screening decision of the screened paper
+     */
+    private function saveScreening_InclusionField()
+    {
+        $action = "save_screening";
+        $test_name = "Save the screening inclusion decision made for a paper with inclusion criteria field.";
+        $test_aspect_screening = "Screening details";
+        $expected_screening = '[{"paper_id":"1","screening_phase":"1","screening_decision":"Included","decision_source":"new_screen","decision_active":"1"}]';
+
+        $screening_paper = $this->ci->db->query("SELECT * FROM relis_dev_correct_" . getProjectShortName() . ".screening_paper WHERE assignment_role = 'Screening' AND screening_id = 1")->row_array();
+        $data = ["criteria_ex" => "", "criteria_in" => 1, "note" => "", "screening_id" => $screening_paper['screening_id'], "decision" => "accepted", "operation_type" => "new", "screening_phase" => $screening_paper['screening_phase'], "operation_source" => "list_screen/mine_screen", "paper_id" => $screening_paper['paper_id'], "assignment_id" => $screening_paper['screening_id'], "screen_type" => "simple_screen"];
+        $response = $this->http_client->response($this->controller, $action, $data, "POST");
+
+        if ($response['status_code'] >= 400) {
+            $actual_screening = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_screening = json_encode($this->ci->db->query("SELECT paper_id, screening_phase, screening_decision, decision_source, decision_active FROM relis_dev_correct_" . getProjectShortName() . ".screen_decison")->result_array());
+        }
+
+        run_test($this->controller, $action, $test_name, $test_aspect_screening, $expected_screening, $actual_screening);
+    }
+
+    /*
+     * Test 18
      * Action : save_assignment_screen
      * Description : Test the number of assignment per reviewer with 5 papers to assign to 2 reviewers with 2 reviews per paper.
      * Expected Paper assignements : 
@@ -825,7 +852,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 18
+     * Test 19
      * Action : screen_paper
      * Description : Handle the display of papers for screening.
      * Expected result: check if correct info is displayed.
@@ -860,7 +887,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 19
+     * Test 20
      * Action : edit_screen
      * Description : Handle the display of a paper for editing when screening hasn’t been done yet.
      * Expected HTTP Response Code : 200 OK (indicating a successful response from the server).
@@ -886,7 +913,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 20
+     * Test 21
      * Action : save_screening
      * Description : Save the screening exclusion decision made for a paper with no exclusion criteria field.
      * Expected screening details: No screening done
@@ -913,7 +940,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 21
+     * Test 22
      * Action : screen_result
      * Description : Display screening statistics and results while no paper is screened yet.
      * Expected result: check if the results values are corrects
@@ -961,7 +988,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 22
+     * Test 23
      * Action : screen_result
      * Description : Display screening statistics and results while 3 out of 5 papers are screened.
      * Expected result: check if the results values are corrects
@@ -1011,7 +1038,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 23
+     * Test 24
      * Action : save_screening
      * Description : Save the screening decision made for all papers.
      * Expected screening details
@@ -1091,7 +1118,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 24
+     * Test 25
      * Action : edit_screen
      * Description : Handle the display of a paper for editing a screening done.
      * Expected HTTP Response Code : 200 OK (indicating a successful response from the server).
@@ -1117,7 +1144,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 25
+     * Test 26
      * Action : screen_completion
      * Description : calculate and display the completion progress of screening for users.
      * Expected correct completion progress calculation
@@ -1150,7 +1177,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 26
+     * Test 27
      * Action : screen_result
      * Description : Display screening statistics and results with 1 paper Included, 2 excluded and 1 conflict.
      * Expected result: check if the results values are corrects
@@ -1198,7 +1225,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 27
+     * Test 28
      * Action : save_phase_screen
      * Description : Handle the process of saving a screening phase without Title field.
      * Expected screening phase saved in DB: No phase should be inserted (Number of phases should be same before and after the request)
@@ -1247,7 +1274,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 28
+     * Test 29
      * Action : save_phase_screen
      * Description : Handle the process of saving a screening phase without displayed_fields_vals field.
      * Expected screening phase saved in DB: No phase should be inserted (Number of phases should be same before and after the request)
@@ -1295,7 +1322,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 29
+     * Test 30
      * Action : save_phase_screen
      * Description : Handle the process of saving a final screening phase while an final phase already exist.
      * Expected screening phase saved in DB: No phase should be inserted (Number of phases should be same before and after the request)
@@ -1343,7 +1370,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 30
+     * Test 31
      * Action : save_phase_screen
      * Description : Handle the process of saving a screening phase.
      * Expected screening phase saved in DB.
@@ -1402,7 +1429,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 31
+     * Test 32
      * Action : display_paper_screen
      * Description : Display the details of a paper in the screening process.
      * Expected HTTP Response Code : 200 OK (indicating a successful response from the server).
@@ -1426,7 +1453,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 32
+     * Test 33
      * Action : list_screen
      * Description : display a list of screening done.
      * Expected HTTP Response Code : 200 OK (indicating a successful response from the server).
@@ -1449,7 +1476,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 33
+     * Test 34
      * Action : validate_screen_set
      * Description : Display page for assigning papers for validation in the screening process.
      * Expected nbr of users (Number of users added to the project available for assignation) : 2
@@ -1520,7 +1547,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 34
+     * Test 35
      * Action : save_assign_screen_validation
      * Description : Handle the saving of paper assignments for screening validation with empty percentage in POST request.
      * Expected Paper assignements : 
@@ -1565,7 +1592,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 35
+     * Test 36
      * Action : save_assign_screen_validation
      * Description : Handle the saving of paper assignments for screening validation with invalid percentage (>100) in POST request.
      * Expected Paper assignements : 
@@ -1610,7 +1637,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 36
+     * Test 37
      * Action : save_assign_screen_validation
      * Description : Handle the saving of paper assignments for screening validation with empty users in POST request.
      * Expected Paper assignements : 
@@ -1654,7 +1681,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 37
+     * Test 38
      * Action : save_assign_screen_validation
      * Description : save the assignments of papers for screening validation with 50% of paper assignement.
      * Expected Paper assignements : 
@@ -1705,7 +1732,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 38
+     * Test 39
      * Action : save_assign_screen_validation
      * Description : save the assignments of papers for screening validation with 100% of paper assignement.
      * Expected Paper assignements : 
@@ -1765,7 +1792,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 39
+     * Test 40
      * Action : screen_paper_validation
      * Description : handle the display of a paper for screening validation
      * Expected HTTP Response Code : 200 OK (indicating a successful response from the server).
@@ -1788,7 +1815,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 40
+     * Test 41
      * Action : screen_completion
      * Description : calculate and display the completion progress of screening validation for users.
      * Expected HTTP Response Code : 200 OK (indicating a successful response from the server).
@@ -1811,7 +1838,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 41
+     * Test 42
      * Action : screen_validation_result
      * Description : Display screening validation statistics and results.
      * Expected HTTP Response Code : 200 OK (indicating a successful response from the server).
@@ -1834,7 +1861,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 42
+     * Test 43
      * Action : remove_screening
      * Description : Remove a screening entry from the database.
      * Expected update in DB
@@ -1864,7 +1891,7 @@ class ScreeningUnitTest
     }
 
     /*
-     * Test 43
+     * Test 44
      * Action : remove_screening_validation
      * Description : Handle the removal of screening validation entries from the database.
      * Expected update in DB

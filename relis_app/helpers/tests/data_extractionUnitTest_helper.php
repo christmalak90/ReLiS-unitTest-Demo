@@ -580,15 +580,15 @@ class Data_extractionUnitTest
     /*
      * Test 16
      * Action : search_classification
-     * Description : Search and display classification info with a string that matches 3 papers.
-     * Expected displayed papers and number of displayed papers: 3
+     * Description : Search and display classification info with a string that matches 5 papers.
+     * Expected displayed papers and number of displayed papers: 5
      */
     private function searchClassification_3matches()
     {
         $action = "search_classification";
-        $test_name = "Search and display classification info with a string that match 3 papers";
+        $test_name = "Search and display classification info with a string that match 5 papers";
         $test_NbrOfPapers = "Nbr of displayed papers";
-        $expected_NbrOfPapers = 3;
+        $expected_NbrOfPapers = 5;
         $actual_NbrOfPapers = 0;
 
         //search papers with year = 2017

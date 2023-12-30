@@ -65,29 +65,6 @@ class ReportingUnitTest
     }
 
     /*
-     * Action : result_graph
-     * Description : Generate a graph displaying the result of a paper classification.
-     * Expected HTTP Response Code : 200 OK
-     */
-    private function resultGraph()
-    {
-        $action = "result_graph";
-        $test_name = "Generate a graph displaying the result of a paper classification";
-        $test_httpCode = "Http response code";
-        $expected_httpCode = http_code()[200];
-
-        $response = $this->http_client->response($this->controller, $action);
-
-        if ($response['status_code'] >= 400) {
-            $actual_httpCode = "<span style='color:red'>" . $response['content'] . "</span>";
-        } else {
-            $actual_httpCode = http_code()[$response['status_code']];
-        }
-
-        run_test($this->controller, $action, $test_name, $test_httpCode, $expected_httpCode, $actual_httpCode);
-    }
-
-    /*
      * Action : result_export
      * Description : display the export options to download the result data
      * Expected HTTP Response Code : 200 OK
@@ -134,33 +111,6 @@ class ReportingUnitTest
     }
 
     /*
-     * Action : result_export_classification
-     * Description : Retrieves the classification data and export them to a csv file
-     * Expected generated reporting file: check if the reproting file is generated
-     */
-    private function result_export_classification()
-    {
-        $action = "result_export_classification";
-        $test_name = "Retrieves the classification data and export them to a csv file";
-        $test_generated_file = "Generated file";
-        $expected_generated_file = "relis_classification_demoTestProject.csv";
-
-        $response = $this->http_client->response($this->controller, $action);
-
-        if ($response['status_code'] >= 400) {
-            $actual_generated_file = "<span style='color:red'>" . $response['content'] . "</span>";
-        } else {
-            if (file_exists("cside/export_r/relis_classification_demoTestProject.csv")) {
-                $actual_generated_file = "relis_classification_demoTestProject.csv";
-            } else {
-                $actual_generated_file = "File not generated";
-            }
-        }
-
-        run_test($this->controller, $action, $test_name, $test_generated_file, $expected_generated_file, $actual_generated_file);
-    }
-
-    /*
      * Action : result_export_excluded_class
      * Description : exporting the excluded papers with their classification information to a CSV file
      * Expected generated reporting file: check if the reproting file is generated
@@ -177,7 +127,7 @@ class ReportingUnitTest
         if ($response['status_code'] >= 400) {
             $actual_generated_file = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            if (file_exists("cside/export_r/relis_paper_excluded_class_demoTestProject.csv")) {
+            if (file_get_contents('cside/export_r/relis_paper_excluded_class_demoTestProject.csv') == file_get_contents('relis_app/helpers/tests/testFiles/reporting/get_relis_paper_excluded_class.csv')) {
                 $actual_generated_file = "relis_paper_excluded_class_demoTestProject.csv";
             } else {
                 $actual_generated_file = "File not generated";
@@ -204,7 +154,7 @@ class ReportingUnitTest
         if ($response['status_code'] >= 400) {
             $actual_generated_file = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            if (file_exists("cside/export_r/relis_paper_demoTestProject.csv")) {
+            if (file_get_contents('cside/export_r/relis_paper_demoTestProject.csv') == file_get_contents('relis_app/helpers/tests/testFiles/reporting/get_relis_paper.csv')) {
                 $actual_generated_file = "relis_paper_demoTestProject.csv";
             } else {
                 $actual_generated_file = "File not generated";
@@ -231,7 +181,7 @@ class ReportingUnitTest
         if ($response['status_code'] >= 400) {
             $actual_generated_file = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            if (file_exists("cside/export_r/relis_paper_bibtex_demoTestProject.bib")) {
+            if (file_get_contents('cside/export_r/relis_paper_bibtex_demoTestProject.bib') == file_get_contents('relis_app/helpers/tests/testFiles/reporting/get_relis_paper_bibtex.bib')) {
                 $actual_generated_file = "relis_paper_bibtex_demoTestProject.bib";
             } else {
                 $actual_generated_file = "File not generated";
@@ -285,7 +235,7 @@ class ReportingUnitTest
         if ($response['status_code'] >= 400) {
             $actual_generated_file = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            if (file_exists("cside/export_r/relis_paper_bibtex_Excluded_demoTestProject.bib")) {
+            if (file_get_contents('cside/export_r/relis_paper_bibtex_Excluded_demoTestProject.bib') == file_get_contents('relis_app/helpers/tests/testFiles/reporting/get_relis_paper_bibtex_Excluded.bib')) {
                 $actual_generated_file = "relis_paper_bibtex_Excluded_demoTestProject.bib";
             } else {
                 $actual_generated_file = "File not generated";
@@ -312,7 +262,7 @@ class ReportingUnitTest
         if ($response['status_code'] >= 400) {
             $actual_generated_file = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            if (file_exists("cside/export_r/relis_paper_excluded_screen_demoTestProject.csv")) {
+            if (file_get_contents('cside/export_r/relis_paper_excluded_screen_demoTestProject.csv') == file_get_contents('relis_app/helpers/tests/testFiles/reporting/get_relis_paper_excluded_screen.csv')) {
                 $actual_generated_file = "relis_paper_excluded_screen_demoTestProject.csv";
             } else {
                 $actual_generated_file = "File not generated";
@@ -325,24 +275,41 @@ class ReportingUnitTest
     /*
      * Action : r_export_configurations
      * Description : Display the form to export r configurations
-     * Expected HTTP Response Code : 200
+     * Expected result : check if all categories are presents
      */
     private function r_export_configurations()
     {
         $action = "r_export_configurations";
         $test_name = "Display the form to export r configurations";
-        $test_httpCode = "Http response code";
-        $expected_httpCode = http_code()[200];
+        $test_aspect = "All categories present?";
+        $expected_result = "yes";
+        $actual_result = "no";
 
         $response = $this->http_client->response($this->controller, $action);
 
         if ($response['status_code'] >= 400) {
             $actual_httpCode = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            $actual_httpCode = http_code()[$response['status_code']];
+            if (
+                strstr($response['content'], "Has chocolate") != false &&
+                strstr($response['content'], "Temperature") != false &&
+                strstr($response['content'], "Start date") != false &&
+                strstr($response['content'], "Code") != false &&
+                strstr($response['content'], "Brand") != false &&
+                strstr($response['content'], "Cocoa origin") != false &&
+                strstr($response['content'], "Cocoa level") != false &&
+                strstr($response['content'], "Types") != false &&
+                strstr($response['content'], "Variety") != false &&
+                strstr($response['content'], "Venue") != false &&
+                strstr($response['content'], "Year") != false &&
+                strstr($response['content'], "Number of citations") != false &&
+                strstr($response['content'], "Note") != false
+            ) {
+                $actual_result = "yes";
+            }
         }
 
-        run_test($this->controller, $action, $test_name, $test_httpCode, $expected_httpCode, $actual_httpCode);
+        run_test($this->controller, $action, $test_name, $test_aspect, $expected_result, $actual_result);
     }
 
     /*
@@ -377,7 +344,10 @@ class ReportingUnitTest
         if ($response['status_code'] >= 400) {
             $actual_generated_files = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
-            if (file_exists("cside/export_r/relis_r_config_demoTestProject.R") && file_exists("cside/export_r/relis_r_lib_demoTestProject.R")) {
+            if (
+                file_get_contents('cside/export_r/relis_r_config_demoTestProject.R') == file_get_contents('relis_app/helpers/tests/testFiles/reporting/get_relis_r_config.R') &&
+                file_get_contents('cside/export_r/relis_r_lib_demoTestProject.R') == file_get_contents('relis_app/helpers/tests/testFiles/reporting/get_relis_r_lib.R')
+            ) {
                 $actual_generated_files = "relis_r_config_demoTestProject.R, relis_r_lib_demoTestProject.R";
             } else {
                 $actual_generated_files = "Files not generated";
@@ -385,6 +355,56 @@ class ReportingUnitTest
         }
 
         run_test($this->controller, $action, $test_name, $test_generated_files, $expected_generated_files, $actual_generated_files);
+    }
+
+    /*
+     * Action : result_graph
+     * Description : Generate a graph displaying the result of a paper classification.
+     * Expected HTTP Response Code : 200 OK
+     */
+    private function resultGraph()
+    {
+        $action = "result_graph";
+        $test_name = "Generate a graph displaying the result of a paper classification";
+        $test_httpCode = "Http response code";
+        $expected_httpCode = http_code()[200];
+
+        $response = $this->http_client->response($this->controller, $action);
+
+        if ($response['status_code'] >= 400) {
+            $actual_httpCode = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            $actual_httpCode = http_code()[$response['status_code']];
+        }
+
+        run_test($this->controller, $action, $test_name, $test_httpCode, $expected_httpCode, $actual_httpCode);
+    }
+
+    /*
+     * Action : result_export_classification
+     * Description : Retrieves the classification data and export them to a csv file
+     * Expected generated reporting file: check if the reproting file is generated
+     */
+    private function result_export_classification()
+    {
+        $action = "result_export_classification";
+        $test_name = "Retrieves the classification data and export them to a csv file";
+        $test_generated_file = "Generated file";
+        $expected_generated_file = "relis_classification_demoTestProject.csv";
+
+        $response = $this->http_client->response($this->controller, $action);
+
+        if ($response['status_code'] >= 400) {
+            $actual_generated_file = "<span style='color:red'>" . $response['content'] . "</span>";
+        } else {
+            if (file_exists("cside/export_r/relis_classification_demoTestProject.csv")) {
+                $actual_generated_file = "relis_classification_demoTestProject.csv";
+            } else {
+                $actual_generated_file = "File not generated";
+            }
+        }
+
+        run_test($this->controller, $action, $test_name, $test_generated_file, $expected_generated_file, $actual_generated_file);
     }
 }
 

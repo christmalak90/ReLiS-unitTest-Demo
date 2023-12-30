@@ -44,7 +44,6 @@ class UserUnitTest
         $this->submitLogin_correctUsernameAndPassword();
         $this->loginAsDemoUser();
         $this->logout();
-        $this->help_Page();
     }
 
     private function TestInitialize()
@@ -318,7 +317,7 @@ class UserUnitTest
     private function newUserFormWithcorrectFieldData()
     {
         $action = "check_create_user";
-        $test_name = "Submit new user form while all the form fields are correctly filed and the reCAPTCHA is checked";
+        $test_name = "Submit new user form while all the form fields are correctly filled";
 
         $test_createdUser = "Created user";
         $test_createdUserConfirmation = "Created user confirmation";
@@ -798,31 +797,6 @@ class UserUnitTest
             $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
         } else {
             $actual_value = $this->http_client->readUserdata('user_id');
-        }
-
-        run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);
-    }
-
-    /*
-     * Test 27
-     * Controller : User
-     * Action : help
-     * Scenario : When the user navigate to "user/help" url they should be taken to the ReLiS help page (Getting Started page).
-     */
-    private function help_Page()
-    {
-        //error: doublon of user_help
-
-        $action = "help";
-        $test_name = "Test help page";
-        $test_aspect = "Http response code";
-        $expected_value = http_code()[200];
-        $response = $this->http_client->response($this->controller, $action);
-
-        if ($response['status_code'] >= 400) {
-            $actual_value = "<span style='color:red'>" . $response['content'] . "</span>";
-        } else {
-            $actual_value = http_code()[$response['status_code']];
         }
 
         run_test($this->controller, $action, $test_name, $test_aspect, $expected_value, $actual_value);

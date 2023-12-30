@@ -28,274 +28,14 @@ class Manager extends CI_Controller
 		parent::__construct();
 	}
 
-	/*
-	 * Fonction globale pour afficher la liste des élément suivant la structure de la table
-	 *
-	 * Input: $ref_table: nom de la configuration d'une page (ex papers, author)
-	 * 			$val : valeur de recherche si une recherche a été faite sur la table en cours
-	 * 			$page: la page affiché : ulilisé dans la navigation
-	 */
-	public function entity_list($ref_table, $val = "_", $page = 0, $dynamic_table = 0)
-	{
-		/*
-		 * Vérification si il y a une condition de recherche
-		 */
-		$val = urldecode(urldecode($val));
-		$filter = array();
-		if (isset($_POST['search_all'])) {
-			$filter = $this->input->post();
-			unset($filter['search_all']);
-			$val = "_";
-			if (isset($filter['valeur']) and !empty($filter['valeur'])) {
-				$val = $filter['valeur'];
-				$val = urlencode(urlencode($val));
-			}
-			/*
-			 * mis à jours de l'url en ajoutant la valeur recherché dans le lien puis rechargement de l'url
-			 */
-			$url = "manager/entity_list/" . $ref_table . "/" . $val . "/0/";
-			redirect($url);
-		}
-		/*
-		 * Récupération de la configuration(structure) de la table à afficher
-		 */
-		$ref_table_config = get_table_config($ref_table);
-		$table_id = $ref_table_config['table_id'];
-		/*
-		 * Appel du model pour récupérer la liste à aficher dans la Base de donnés
-		 */
-		$rec_per_page = ($dynamic_table) ? -1 : 0;
-		if ($ref_table == "str_mng") { //pour le string_management une fonction spéciale
-			//todo verifier comment le spécifier dans config
-			$data = $this->DBConnection_mdl->get_list_str_mng($ref_table_config, $val, $page, $rec_per_page, $this->session->userdata('active_language'));
-		} else {
-			$data = $this->DBConnection_mdl->get_list($ref_table_config, $val, $page, $rec_per_page);
-		}
-		//print_test($data);
-		/*
-		 * récupération des correspondances des clés externes pour l'affichage  suivant la structure de la table
-		 */
-		$dropoboxes = array();
-		foreach ($ref_table_config['fields'] as $k => $v) {
-			if (!empty($v['input_type']) and $v['input_type'] == 'select' and $v['on_list'] == 'show') {
-				if ($v['input_select_source'] == 'array') {
-					$dropoboxes[$k] = $v['input_select_values'];
-				} elseif ($v['input_select_source'] == 'table') {
-					//print_test($v);
-					$dropoboxes[$k] = $this->manager_lib->get_reference_select_values($v['input_select_values']);
-				} elseif ($v['input_select_source'] == 'yes_no') {
-					$dropoboxes[$k] = array(
-						'0' => "No",
-						'1' => "Yes"
-					);
-				}
-			}
-		}
-		/*
-		 * Vérification des liens (links) a afficher sur la liste
-		 */
-		$list_links = array();
-		$add_link = false;
-		$add_link_url = "";
-		foreach ($ref_table_config['links'] as $link_type => $link) {
-			if (!empty($link['on_list'])) { {
-					$link['type'] = $link_type;
-					if (empty($link['title'])) {
-						$link['title'] = lng_min($link['label']);
-					}
-					$push_link = false;
-					switch ($link_type) {
-						case 'add':
-							$add_link = true; //will appear as a top button
-							if (empty($link['url']))
-								$add_link_url = 'manager/add_element/' . $ref_table;
-							else
-								$add_link_url = $link['url'];
-							break;
-						case 'view':
-							if (!isset($link['icon']))
-								$link['icon'] = 'folder';
-							if (empty($link['url']))
-								$link['url'] = 'manager/display_element/' . $ref_table . '/';
-							$push_link = true;
-							break;
-						case 'edit':
-							if (!isset($link['icon']))
-								$link['icon'] = 'pencil';
-							if (empty($link['url']))
-								$link['url'] = 'manager/edit_element/' . $ref_table . '/';
-							$push_link = true;
-							break;
-						case 'delete':
-							if (!isset($link['icon']))
-								$link['icon'] = 'trash';
-							if (empty($link['url']))
-								$link['url'] = 'manager/delete_element/' . $ref_table . '/';
-							$push_link = true;
-							break;
-						case 'add_child':
-							if (!isset($link['icon']))
-								$link['icon'] = 'plus';
-							if (!empty($link['url'])) {
-								$link['url'] = 'manager/add_element_child/' . $link['url'] . "/" . $ref_table . "/";
-								$push_link = true;
-							}
-							break;
-						default:
-							break;
-					}
-					if ($push_link)
-						array_push($list_links, $link);
-				}
-			}
-		}
-		/*
-		 * Préparation de la liste à afficher sur base du contenu et  stucture de la table
-		 */
-		/**
-		 * @var array $field_list va contenir les champs à afficher 
-		 */
-		$field_list = array();
-		$field_list_header = array();
-		foreach ($ref_table_config['fields'] as $k => $v) {
-			if ($v['on_list'] == 'show') {
-				array_push($field_list, $k);
-				array_push($field_list_header, $v['field_title']);
-			}
-		}
-		//print_test($field_list);
-		$i = 1;
-		$list_to_display = array();
-		foreach ($data['list'] as $key => $value) {
-			$element_array = array();
-			foreach ($field_list as $key_field => $v_field) {
-				if (isset($value[$v_field])) {
-					if (isset($dropoboxes[$v_field][$value[$v_field]])) {
-						$element_array[$v_field] = $dropoboxes[$v_field][$value[$v_field]];
-					} else {
-						$element_array[$v_field] = $value[$v_field];
-					}
-				} else {
-					$element_array[$v_field] = "";
-					if (isset($ref_table_config['fields'][$v_field]['number_of_values']) and $ref_table_config['fields'][$v_field]['number_of_values'] != 1) {
-						if (isset($ref_table_config['fields'][$v_field]['input_select_values']) and isset($ref_table_config['fields'][$v_field]['input_select_key_field'])) {
-							// récuperations des valeurs de cet element
-							$M_values = $this->manager_lib->get_element_multi_values($ref_table_config['fields'][$v_field]['input_select_values'], $ref_table_config['fields'][$v_field]['input_select_key_field'], $data['list'][$key][$table_id]);
-							$S_values = "";
-							foreach ($M_values as $k_m => $v_m) {
-								if (isset($dropoboxes[$v_field][$v_m])) {
-									$M_values[$k_m] = $dropoboxes[$v_field][$v_m];
-								}
-								$S_values .= empty($S_values) ? $M_values[$k_m] : " | " . $M_values[$k_m];
-							}
-							$element_array[$v_field] = $S_values;
-						}
-					}
-				}
-			}
-			/*
-			 * Ajout des liens(links) sur la liste
-			 */
-			$action_button = "";
-			$arr_buttons = array();
-			foreach ($list_links as $key_l => $value_l) {
-				if (!empty($value_l['icon']))
-					$value_l['label'] = icon($value_l['icon']) . ' ' . lng_min($value_l['label']);
-				array_push($arr_buttons, array(
-					'url' => $value_l['url'] . $value[$table_id],
-					'label' => $value_l['label'],
-					'title' => $value_l['title']
-				));
-			}
-			$action_button = create_button_link_dropdown($arr_buttons, lng_min('Action'));
-			if (!empty($action_button))
-				$element_array['links'] = $action_button;
-			if (isset($element_array[$table_id])) {
-				$element_array[$table_id] = $i + $page;
-			}
-			array_push($list_to_display, $element_array);
-			$i++;
-		}
-		$data['list'] = $list_to_display;
-		/*
-		 * Ajout de l'entête de la liste
-		 */
-		if (!empty($data['list'])) {
-			//$array_header=$ref_table_config['header_list_fields'];
-			$array_header = $field_list_header;
-			if (!empty($data['list'][$key]['links'])) {
-				array_push($array_header, '');
-			}
-			if (!$dynamic_table) {
-				array_unshift($data['list'], $array_header);
-			} else {
-				$data['list_header'] = $array_header;
-			}
-		}
-		/*
-		 * Création des boutons qui vont s'afficher en haut de la page (top_buttons)
-		 */
-		$data['top_buttons'] = "";
-		if ($ref_table == "str_mng") { //todo à corriger
-			if ($this->session->userdata('language_edit_mode') == 'yes') {
-				$data['top_buttons'] .= get_top_button('all', 'Close edition mode', 'config/update_edition_mode/no', 'Close edition mode', 'fa-ban', '', ' btn-warning ');
-			} else {
-				$data['top_buttons'] .= get_top_button('all', 'Open edition mode', 'config/update_edition_mode/yes', 'Open edition mode', 'fa-check', '', ' btn-dark ');
-			}
-		} else {
-			if ($add_link)
-				$data['top_buttons'] .= get_top_button('add', 'Add new', $add_link_url);
-		}
-		if (activate_update_stored_procedure())
-			$data['top_buttons'] .= get_top_button('all', 'Update stored procedure', 'home/update_stored_procedure/' . $ref_table, 'Update stored procedure', 'fa-check', '', ' btn-dark ');
-		if ($this->session->userdata('working_perspective') == 'class') {
-			$data['top_buttons'] .= get_top_button('close', 'Close', 'home');
-		} else {
-			$data['top_buttons'] .= get_top_button('close', 'Close', 'screening/screening');
-		}
-		/*
-		 * Titre de la page
-		 */
-		if (isset($ref_table_config['entity_title']['list'])) {
-			$data['page_title'] = lng($ref_table_config['entity_title']['list']);
-		} else {
-			$data['page_title'] = lng("List of " . $ref_table_config['reference_title']);
-		}
-		/*
-		 * Configuration pour l'affichage des lien de navigation
-		 */
-		$data['valeur'] = ($val == "_") ? "" : $val;
-		/*
-		 * Si on a besoin de faire urecherche sur la liste specifier la vue où se trouve le formulaire de recherche
-		 */
-		if (!$dynamic_table and !empty($ref_table_config['search_by'])) {
-			$data['search_view'] = 'general/search_view';
-		}
-		/*
-		 * La vue qui va s'afficher
-		 */
-		if (!$dynamic_table) {
-			$data['nav_pre_link'] = 'manager/entity_list/' . $ref_table . '/' . $val . '/';
-			$data['nav_page_position'] = 5;
-			$data['page'] = 'general/list';
-		} else {
-			$data['page'] = 'general/list_dt';
-		}
-		if (admin_config($ref_table))
-			$data['left_menu_admin'] = True;
-		//print_test($data);
-		/*
-		 * Chargement de la vue avec les données préparés dans le controleur
-		 */
-		$this->load->view('shared/body', $data);
-	}
+	
 
 	/*
 	 * Fonction pour l'affichage d'un élément
 	 * Input :	$ref_table : nom de la structure de l'element à afficher
 	 * 			$ref_id : id de l'élément
 	 *
-	 */
+	 */ 
 	public function display_element($ref_table, $ref_id, $allow_redirect = "yes")
 	{
 		// todo correction gestion des utilisateurs
@@ -459,7 +199,7 @@ class Manager extends CI_Controller
 	/*
 	 * spécialisation de la fonction add_ref_child lorsque le formulaire s'affiche en pop up
 	 */
-	public function add_element_child_modal($ref_table_child = "users", $child_field = "user_usergroup", $ref_table_parent = "usergroup", $parent_id = 2, $data = "", $operation = "new", $display_type = "normal")
+	public function add_element_child_modal($ref_table_child = "users", $child_field = "user_usergroup", $ref_table_parent = "usergroup", $parent_id = 2, $data = "", $operation = "new", $display_type = "normal") // not in element test
 	{
 		$this->add_element_child($ref_table_child, $child_field, $ref_table_parent, $parent_id, $data, $operation, "modal");
 	}
@@ -1111,7 +851,7 @@ class Manager extends CI_Controller
 	 * 			$operation: type de l'opération ajout (new) ou modification(edit)
 	 *
 	 */
-	public function new_exclusion($paper_id, $data = array(), $operation = "new")
+	public function new_exclusion($paper_id, $data = array(), $operation = "new") //not used
 	{
 		$ref_table_child = 'exclusion';
 		$child_field = 'exclusion_paper_id';
@@ -1487,7 +1227,7 @@ class Manager extends CI_Controller
 	}
 
 	//ensure that the drilldown element is removed from the child table and updates the parent element accordingly
-	public function remove_drilldown($child_id, $table_config_child, $table_config_parent, $parent_id, $parent_field, $update_parrent = 'yes', $modal = 'no')
+	public function remove_drilldown($child_id, $table_config_child, $table_config_parent, $parent_id, $parent_field, $update_parrent = 'yes', $modal = 'no') //to be tested
 	{
 		$this->delete_element($table_config_child, $child_id, FALSE);
 		if ($update_parrent == 'yes') {
@@ -1512,7 +1252,7 @@ class Manager extends CI_Controller
 	}
 
 	//used to remove a picture associated with an element in a table. 
-	public function remove_picture($ref_table, $table_name, $table_id, $field, $element_id)
+	public function remove_picture($ref_table, $table_name, $table_id, $field, $element_id) //to be tested
 	{
 		$table_name = mysql_real_escape_string($table_name);
 		$table_id = mysql_real_escape_string($table_id);
@@ -1529,7 +1269,7 @@ class Manager extends CI_Controller
 	}
 
 	//assignment screen creation page
-	public function new_assignment_screen($paper_id, $redirect = "paper_screen")
+	public function new_assignment_screen($paper_id, $redirect = "paper_screen") // not used
 	{
 		if (!empty($paper_id) and $redirect == 'paper_screen') {
 			$this->session->set_userdata('after_save_redirect', "screening/display_paper_screen/$paper_id");
@@ -1543,7 +1283,7 @@ class Manager extends CI_Controller
 	}
 
 	//cancel different types of operations and update the corresponding records and operation state in the database
-	public function cancel_operation($operations_id, $active_value = 0)
+	public function cancel_operation($operations_id, $active_value = 0) //to be tested
 	{
 		//get operation detail
 		$sql = "SELECT * FROM operations WHERE 	operation_id=$operations_id";
@@ -1583,13 +1323,13 @@ class Manager extends CI_Controller
 	}
 
 	//undo the cancellation of an operation
-	public function undo_cancel_operation($operations_id)
+	public function undo_cancel_operation($operations_id) //to be tested
 	{
 		$this->cancel_operation($operations_id, 1);
 	}
 
 	// display a confirmation message for clearing all logs and provide options to proceed or cancel the operation
-	function clear_logs_validation()
+	function clear_logs_validation() //to be tested
 	{
 		$data['page'] = 'install/frm_install_result';
 		$data['left_menu_admin'] = True;
@@ -1603,7 +1343,7 @@ class Manager extends CI_Controller
 	}
 
 	//deactivate all active logs in the system and provide feedback to the user that the logs have been cleaned
-	public function clear_logs()
+	public function clear_logs() //to be tested
 	{
 		$sql = "UPDATE log SET log_active=0 where log_active=1 ";
 		$res = $this->db->query($sql);

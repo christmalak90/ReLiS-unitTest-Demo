@@ -17,10 +17,41 @@ class ConfigUnitTest
 
     function run_tests()
     {
+        $this->TestInitialize();
+        // $this->generateConfig();
+        $this->updateEditionMode();
+    }
+
+    private function TestInitialize()
+    {
+        //delete generated userdata session files
+        deleteSessionFiles();
+        //delete generated reporting files
+        deleteReportingFiles();
+        //delete created test user
+        deleteCreatedTestUser();
+        //delete created demoProject
+        deleteCreatedTestProject();
+        //create test user
+        addTestUser();
         //Login as admin
         $this->http_client->response("user", "check_form", ['user_username' => 'admin', 'user_password' => '123'], "POST");
-        $this->generateConfig();
-        $this->updateEditionMode();
+        //create demoProject
+        createDemoProject();
+        //add users to test Project
+        addUserToProject(getAdminUserId(), "Reviewer");
+        addUserToProject(getTestUserId(), "Reviewer");
+        //add 5 papers to test Project
+        addBibtextPapersToProject("relis_app/helpers/tests/testFiles/paper/5_bibPapers.bib");
+        //perform screening with 4 included papers
+        assignPapers_and_performScreening([getAdminUserId(), getTestUserId()], 'Title', -1, 4);
+        // //perform QA with 2 low quality papers (1 for each user)
+        assignPapers_and_performQA([getAdminUserId(), getTestUserId()], -1, 1);
+        // //Exclude low quality papers
+        qaExcludeLowQuality();
+        //perform classification
+        assignPapersForClassification([getAdminUserId(), getTestUserId()]);
+        performClassification();
     }
 
     /*

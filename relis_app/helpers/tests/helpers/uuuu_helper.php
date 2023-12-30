@@ -676,7 +676,7 @@ function performClassification()
             'parent_table' => '',
             'class_id' => '',
             'class_paper_id' => $paperId,
-            'has_choco' => 0,
+            'has_choco' => 1,
             'temperature' => 0,
             'start' => '2023-11-04',
             'code' => 'AB9',
@@ -687,7 +687,7 @@ function performClassification()
             'venue' => 'udem',
             'year' => 2017,
             'citation' => 7,
-            'note' => 'papers',
+            'note' => 'good',
             'user_id' => getTestUserId()
         ];
 
@@ -718,13 +718,13 @@ function performClassification()
             'temperature' => 0,
             'start' => '2023-11-04',
             'code' => 'AB9',
-            'brand' => 2,
+            'brand' => 3,
             'cocoa_origin' => 'Cote dIvoire',
-            'cocoa_level' => '70%',
+            'cocoa_level' => '45%',
             'types' => 'Milk',
             'venue' => 'udem',
-            'year' => 2014,
-            'citation' => 43,
+            'year' => 2017,
+            'citation' => 7,
             'note' => 'good',
             'user_id' => getAdminUserId()
         ];

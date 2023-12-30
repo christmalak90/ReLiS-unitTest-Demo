@@ -111,7 +111,7 @@ Changes made to the local repository will be pushed to the **develop** branch, r
 The implementation of the **main** branch protection system is achieved as follows:
 
 - Go to the settings tab of the repository on the rightest side 
-[Settings tab](../../../cside/images/Github%20settings.png)
+![Settings tab](../../../cside/images/Github%20settings.png)
 
 - In the `Code and automation` section of the sidebar, click on `Branches`.
 - Click on `Add rule`.

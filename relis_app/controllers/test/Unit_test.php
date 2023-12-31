@@ -49,7 +49,7 @@ class Unit_test extends CI_Controller
     {
         parent::__construct();
 
-        ini_set('default_socket_timeout', 120);
+        // ini_set('default_socket_timeout', 120); ///////////////////////////
         // require_once('relis_app/libraries/table_config/project/temp/install_config_demoTestProject.php');
         require_once('relis_app/helpers/tests/testFiles/project/classification_install_demoTestProject.php');
 

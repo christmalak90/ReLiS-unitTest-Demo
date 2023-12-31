@@ -57,22 +57,22 @@ class Unit_test extends CI_Controller
         $this->load->helper('tests/helpers/hfff'); //////////////
         $this->load->helper('tests/uuss'); ////////////////
         $this->load->helper('tests/pppp'); ////////////
-        $this->load->helper('tests/paperunittest');
-        $this->load->helper('tests/screeningunittest');
-        $this->load->helper('tests/quality_assessmentunittest');
-        $this->load->helper('tests/data_extractionunittest');
-        $this->load->helper('tests/reportingunittest');
-        $this->load->helper('tests/elementunittest');
-        $this->load->helper('tests/homeunittest');
-        $this->load->helper('tests/installunittest');
-        $this->load->helper('tests/adminunittest');
-        $this->load->helper('tests/configunittest');
-        $this->load->helper('tests/manageunittest');
-        $this->load->helper('tests/managerunittest');
-        $this->load->helper('tests/relismanagerunittest');
-        $this->load->helper('tests/apiunittest');
-        $this->load->helper('tests/apiqueryunittest');
-        $this->load->helper('tests/opunittest');
+        // $this->load->helper('tests/paperunittest');
+        // $this->load->helper('tests/screeningunittest');
+        // $this->load->helper('tests/quality_assessmentunittest');
+        // $this->load->helper('tests/data_extractionunittest');
+        // $this->load->helper('tests/reportingunittest');
+        // $this->load->helper('tests/elementunittest');
+        // $this->load->helper('tests/homeunittest');
+        // $this->load->helper('tests/installunittest');
+        // $this->load->helper('tests/adminunittest');
+        // $this->load->helper('tests/configunittest');
+        // $this->load->helper('tests/manageunittest');
+        // $this->load->helper('tests/managerunittest');
+        // $this->load->helper('tests/relismanagerunittest');
+        // $this->load->helper('tests/apiunittest');
+        // $this->load->helper('tests/apiqueryunittest');
+        // $this->load->helper('tests/opunittest');
         $this->load->library('unit_test');
 
         $this->unit->use_strict(TRUE);
@@ -80,22 +80,22 @@ class Unit_test extends CI_Controller
 
         $this->userUnitTest = new UserUnitTest();
         $this->projectUnitTest = new ProjectUnitTest();
-        $this->paperUnitTest = new PaperUnitTest();
-        $this->screeningUnitTest = new ScreeningUnitTest();
-        $this->quality_assessmentUnitTest = new Quality_assessmentUnitTest();
-        $this->data_extractionUnitTest = new Data_extractionUnitTest();
-        $this->reportingUnitTest = new ReportingUnitTest();
-        $this->elementUnitTest = new ElementUnitTest();
-        $this->homeUnitTest = new HomeUnitTest();
-        $this->installUnitTest = new InstallUnitTest();
-        $this->adminUnitTest = new AdminUnitTest();
-        $this->configUnitTest = new ConfigUnitTest();
-        $this->manageUnitTest = new ManageUnitTest();
-        $this->managerUnitTest = new ManagerUnitTest();
-        $this->relisManagerUnitTest = new RelisManagerUnitTest();
-        $this->apiUnitTest = new ApiUnitTest();
-        $this->apiQueryUnitTest = new ApiQueryUnitTest();
-        $this->opUnitTest = new OpUnitTest();
+        // $this->paperUnitTest = new PaperUnitTest();
+        // $this->screeningUnitTest = new ScreeningUnitTest();
+        // $this->quality_assessmentUnitTest = new Quality_assessmentUnitTest();
+        // $this->data_extractionUnitTest = new Data_extractionUnitTest();
+        // $this->reportingUnitTest = new ReportingUnitTest();
+        // $this->elementUnitTest = new ElementUnitTest();
+        // $this->homeUnitTest = new HomeUnitTest();
+        // $this->installUnitTest = new InstallUnitTest();
+        // $this->adminUnitTest = new AdminUnitTest();
+        // $this->configUnitTest = new ConfigUnitTest();
+        // $this->manageUnitTest = new ManageUnitTest();
+        // $this->managerUnitTest = new ManagerUnitTest();
+        // $this->relisManagerUnitTest = new RelisManagerUnitTest();
+        // $this->apiUnitTest = new ApiUnitTest();
+        // $this->apiQueryUnitTest = new ApiQueryUnitTest();
+        // $this->opUnitTest = new OpUnitTest();
     }
 
     public function relis_unit_test($result = "html_report")

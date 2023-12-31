@@ -1,4 +1,4 @@
-<?php //demoTestProject
+<?php //demoTestProject2
 function get_classification_demoTestProject2()
 {
 	$reference_tables = array(); //from nowit will worklike this
@@ -6,7 +6,7 @@ function get_classification_demoTestProject2()
 	$result['class_action'] = 'override';
 	$result['screen_action'] = 'override';
 	$result['qa_action'] = 'override';
-	$result['project_title'] = 'Demo Test Project update';
+	$result['project_title'] = 'Demo Test Project';
 	$result['project_short_name'] = 'demoTestProject2';
 	$config['classification']['table_name'] = 'classification';
 	$config['classification']['config_id'] = 'classification';

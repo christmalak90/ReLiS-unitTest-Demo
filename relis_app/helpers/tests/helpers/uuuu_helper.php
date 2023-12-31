@@ -147,55 +147,61 @@ function getProjectShortName()
     return "demoTestProject";
 }
 
-function getProjectId()
+function getProjectId($projectName = "demoTestProject")
 {
     $ci = get_instance();
-    return $ci->db->query("SELECT project_id from projects where project_label LIKE '" . getProjectShortName() . "'")->row_array()['project_id'];
+    return $ci->db->query("SELECT project_id from projects where project_label LIKE '" . $projectName . "'")->row_array()['project_id'];
 }
 
-function getProjectPath()
+function getProjectDetails($projectName = "demoTestProject")
 {
-    return 'relis_app/helpers/tests/testFiles/project/classification_install_' . getProjectShortName() . '.php';
+    $ci = get_instance();
+    return $ci->db->query("SELECT * from projects where project_label LIKE '" . $projectName . "'")->row_array();
 }
 
-function deleteCreatedTestProject()
+function getProjectPath($projectName = "demoTestProject")
+{
+    return 'relis_app/helpers/tests/testFiles/project/classification_install_' . $projectName . '.php';
+}
+
+function deleteCreatedTestProject($projectName = "demoTestProject")
 {
     $ci = get_instance();
 
     //delete inserted userProject in the userproject table 
-    $ci->db->query("DELETE FROM userproject WHERE project_id ='" . getProjectId() . "'");
+    $ci->db->query("DELETE FROM userproject WHERE project_id ='" . getProjectId($projectName) . "'");
 
     //delete inserted test project in the projects table in the relis_db database
-    $ci->db->query("DELETE FROM projects WHERE project_label ='" . getProjectShortName() . "'");
+    $ci->db->query("DELETE FROM projects WHERE project_label ='" . $projectName . "'");
 
     //Delete created test project database
-    $ci->db->query("DROP DATABASE IF EXISTS relis_dev_correct_" . getProjectShortName());
+    $ci->db->query("DROP DATABASE IF EXISTS relis_dev_correct_" . $projectName);
 }
 
-function createDemoProject()
+function createDemoProject($projectName = "demoTestProject")
 {
     $ci = get_instance();
     $http_client = new Http_client();
-    removeConfigArray();
+    removeConfigArray($projectName);
 
-    $response = $http_client->response("project", "save_new_project", ['fileFieldName' => 'install_config', 'filePath' => getProjectPath()], "POST");
+    $response = $http_client->response("project", "save_new_project", ['fileFieldName' => 'install_config', 'filePath' => getProjectPath($projectName)], "POST");
     preg_match('/8083\/(.*?)(\.html)?$/', $response['url'], $matches);
     $url = $matches[1];
 
-    if ($response["status_code"] == http_code()[303] && $url == "project/save_new_project_part2/" . getProjectShortName()) {
+    if ($response["status_code"] == http_code()[303] && $url == "project/save_new_project_part2/" . $projectName) {
         $http_client->response($url, "");
     }
 
     //set demo project as active project
-    $project_id = $ci->db->query("SELECT project_id from projects where project_label LIKE '" . getProjectShortName() . "'")->row_array()['project_id'];
+    $project_id = $ci->db->query("SELECT project_id from projects where project_label LIKE '" . $projectName . "'")->row_array()['project_id'];
     $http_client->response("project", "set_project/" . $project_id);
 }
 
 //Delete demoproject configuration array in relis_app\config\database.php
-function removeConfigArray()
+function removeConfigArray($projectName = "demoTestProject")
 {
     $file_path = 'relis_app/config/database.php';
-    $config_pattern = '/\$db\[\'demoTestProject\'\].*?\);/s';
+    $config_pattern = '/\$db\[\'' . $projectName . '\'\].*?\);/s';
 
     // Read the content of the file
     $file_content = file_get_contents($file_path);

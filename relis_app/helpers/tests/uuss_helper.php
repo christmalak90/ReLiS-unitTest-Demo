@@ -194,6 +194,7 @@ class UserUnitTest
         $test_name = "Submit new user form while all the form fields are empty";
         $test_aspect = "Table last ID";
         $expected_value = $this->ci->db->query("SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1")->row_array()['user_id'];
+
         $response = $this->http_client->response($this->controller, $action, ['user_name' => '', 'user_mail' => '', 'user_username' => '', 'user_password' => '', 'user_password_validate' => ''], "POST");
 
         if ($response['status_code'] >= 400) {
@@ -219,6 +220,7 @@ class UserUnitTest
         $test_name = "Submit new user form while all the form fields are correctly filed but the email field is not valid";
         $test_aspect = "Table last ID";
         $expected_value = $this->ci->db->query("SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1")->row_array()['user_id'];
+
         $response = $this->http_client->response($this->controller, $action, ['user_name' => 'christian', 'user_mail' => '123gmai.com', 'user_username' => 'Malakani', 'user_password' => '123', 'user_password_validate' => '123'], "POST");
 
         if ($response['status_code'] >= 400) {
@@ -244,6 +246,7 @@ class UserUnitTest
         $test_name = "Submit new user form while all the form fields are correctly filed but the validate password field doesn't match the password field";
         $test_aspect = "Table last ID";
         $expected_value = $this->ci->db->query("SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1")->row_array()['user_id'];
+
         $response = $this->http_client->response($this->controller, $action, ['user_name' => 'christian', 'user_mail' => '123@gmai.com', 'user_username' => 'Malakani', 'user_password' => '123', 'user_password_validate' => '12'], "POST");
 
         if ($response['status_code'] >= 400) {
@@ -269,6 +272,7 @@ class UserUnitTest
         $test_name = "Submit new user form while all the form fields are correctly filed but the reCAPTCHA is not checked";
         $test_aspect = "Table last ID";
         $expected_value = $this->ci->db->query("SELECT user_id FROM users ORDER BY user_id DESC LIMIT 1")->row_array()['user_id'];
+        
         $response = $this->http_client->response($this->controller, $action, ['user_name' => 'christian', 'user_mail' => '123@gmai.com', 'user_username' => 'Malakani', 'user_password' => '123', 'user_password_validate' => '123'], "POST");
 
         if ($response['status_code'] >= 400) {

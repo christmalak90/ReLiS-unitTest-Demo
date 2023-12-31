@@ -55,24 +55,24 @@ class Unit_test extends CI_Controller
         $this->load->helper('tests/helpers/hhhhdh'); //////////////
         $this->load->helper('tests/helpers/uuuu'); //////////////
         $this->load->helper('tests/helpers/hfff'); //////////////
-        $this->load->helper('tests/user_ut'); ////////////////
-        $this->load->helper('tests/pppp'); ////////////
-        // $this->load->helper('tests/paperunittest');
-        // $this->load->helper('tests/screeningunittest');
-        // $this->load->helper('tests/quality_assessmentunittest');
-        // $this->load->helper('tests/data_extractionunittest');
-        // $this->load->helper('tests/reportingunittest');
-        // $this->load->helper('tests/elementunittest');
-        // $this->load->helper('tests/homeunittest');
-        // $this->load->helper('tests/installunittest');
-        // $this->load->helper('tests/adminunittest');
-        // $this->load->helper('tests/configunittest');
-        // $this->load->helper('tests/manageunittest');
-        // $this->load->helper('tests/managerunittest');
-        // $this->load->helper('tests/relismanagerunittest');
-        // $this->load->helper('tests/apiunittest');
-        // $this->load->helper('tests/apiqueryunittest');
-        // $this->load->helper('tests/opunittest');
+        $this->load->helper('tests/user_ut');
+        $this->load->helper('tests/project_ut');
+        $this->load->helper('tests/paper_ut');
+        $this->load->helper('tests/screening_ut');
+        $this->load->helper('tests/quality_assessment_ut');
+        $this->load->helper('tests/data_extraction_ut');
+        $this->load->helper('tests/reporting_ut');
+        $this->load->helper('tests/element_ut');
+        $this->load->helper('tests/home_ut');
+        $this->load->helper('tests/install_ut');
+        $this->load->helper('tests/admin_ut');
+        $this->load->helper('tests/config_ut');
+        $this->load->helper('tests/manage_ut');
+        $this->load->helper('tests/manager_ut');
+        $this->load->helper('tests/relismanager_ut');
+        $this->load->helper('tests/api_ut');
+        $this->load->helper('tests/apiquery_ut');
+        $this->load->helper('tests/op_ut');
         $this->load->library('unit_test');
 
         $this->unit->use_strict(TRUE);
@@ -80,22 +80,22 @@ class Unit_test extends CI_Controller
 
         $this->userUnitTest = new UserUnitTest();
         $this->projectUnitTest = new ProjectUnitTest();
-        // $this->paperUnitTest = new PaperUnitTest();
-        // $this->screeningUnitTest = new ScreeningUnitTest();
-        // $this->quality_assessmentUnitTest = new Quality_assessmentUnitTest();
-        // $this->data_extractionUnitTest = new Data_extractionUnitTest();
-        // $this->reportingUnitTest = new ReportingUnitTest();
-        // $this->elementUnitTest = new ElementUnitTest();
-        // $this->homeUnitTest = new HomeUnitTest();
-        // $this->installUnitTest = new InstallUnitTest();
-        // $this->adminUnitTest = new AdminUnitTest();
-        // $this->configUnitTest = new ConfigUnitTest();
-        // $this->manageUnitTest = new ManageUnitTest();
-        // $this->managerUnitTest = new ManagerUnitTest();
-        // $this->relisManagerUnitTest = new RelisManagerUnitTest();
-        // $this->apiUnitTest = new ApiUnitTest();
-        // $this->apiQueryUnitTest = new ApiQueryUnitTest();
-        // $this->opUnitTest = new OpUnitTest();
+        $this->paperUnitTest = new PaperUnitTest();
+        $this->screeningUnitTest = new ScreeningUnitTest();
+        $this->quality_assessmentUnitTest = new Quality_assessmentUnitTest();
+        $this->data_extractionUnitTest = new Data_extractionUnitTest();
+        $this->reportingUnitTest = new ReportingUnitTest();
+        $this->elementUnitTest = new ElementUnitTest();
+        $this->homeUnitTest = new HomeUnitTest();
+        $this->installUnitTest = new InstallUnitTest();
+        $this->adminUnitTest = new AdminUnitTest();
+        $this->configUnitTest = new ConfigUnitTest();
+        $this->manageUnitTest = new ManageUnitTest();
+        $this->managerUnitTest = new ManagerUnitTest();
+        $this->relisManagerUnitTest = new RelisManagerUnitTest();
+        $this->apiUnitTest = new ApiUnitTest();
+        $this->apiQueryUnitTest = new ApiQueryUnitTest();
+        $this->opUnitTest = new OpUnitTest();
     }
 
     public function relis_unit_test($result = "html_report")
@@ -105,22 +105,22 @@ class Unit_test extends CI_Controller
 
         $this->userUnitTest->run_tests();
         $this->projectUnitTest->run_tests();
-        // $this->paperUnitTest->run_tests();
-        // $this->screeningUnitTest->run_tests();
-        // $this->quality_assessmentUnitTest->run_tests();
-        // $this->data_extractionUnitTest->run_tests();
-        // $this->reportingUnitTest->run_tests();
-        // $this->elementUnitTest->run_tests();
-        // $this->homeUnitTest->run_tests();
-        // $this->installUnitTest->run_tests();
-        // $this->adminUnitTest->run_tests();
-        // $this->configUnitTest->run_tests();
-        // $this->manageUnitTest->run_tests();
-        // $this->managerUnitTest->run_tests();
-        // $this->relisManagerUnitTest->run_tests();
-        // $this->apiUnitTest->run_tests();
-        // $this->apiQueryUnitTest->run_tests();
-        // $this->opUnitTest->run_tests();
+        $this->paperUnitTest->run_tests();
+        $this->screeningUnitTest->run_tests();
+        $this->quality_assessmentUnitTest->run_tests();
+        $this->data_extractionUnitTest->run_tests();
+        $this->reportingUnitTest->run_tests();
+        $this->elementUnitTest->run_tests();
+        $this->homeUnitTest->run_tests();
+        $this->installUnitTest->run_tests();
+        $this->adminUnitTest->run_tests();
+        $this->configUnitTest->run_tests();
+        $this->manageUnitTest->run_tests();
+        $this->managerUnitTest->run_tests();
+        $this->relisManagerUnitTest->run_tests();
+        $this->apiUnitTest->run_tests();
+        $this->apiQueryUnitTest->run_tests();
+        $this->opUnitTest->run_tests();
 
         // Record the end time of the tests
         $endTime = microtime(true);

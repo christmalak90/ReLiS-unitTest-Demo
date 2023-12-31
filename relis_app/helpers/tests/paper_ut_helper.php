@@ -29,27 +29,27 @@ class PaperUnitTest
         $this->importPapersLoad_1CSV();
         $this->importPapersLoad_5CSV();
         $this->importPapersSave_0CSV();
-        // $this->importPapersSave_1CSV();
-        // $this->importPapersSave_5CSV();
-        // $this->importPapersLoadBibtext_0paper();
-        // $this->importPapersLoadBibtext_1paper();
-        // $this->importPapersLoadBibtext_5papers();
-        // $this->importPapersSaveBibtext_0papers();
-        // $this->importPapersSaveBibtext_1paper();
-        // $this->importPapersSaveBibtext_5papers();
-        // $this->importPapersSaveBibtext_withExistingPapers();
-        // $this->addPaperBibtex();
-        // $this->saveBibtexPaper_noTitle();
-        // $this->saveBibtexPaper();
-        // $this->saveBibtexPaper_existingPaper();
-        // $this->clearPapersValidation();
-        // $this->clearPapersTemp();
-        // $this->cancelClearPapers();
-        // $this->biblerAddPaper();
-        // $this->listPaper();
-        // $this->viewPaper();
-        // $this->displayPaperMin();
-        // $this->clearPapers();
+        $this->importPapersSave_1CSV();
+        $this->importPapersSave_5CSV();
+        $this->importPapersLoadBibtext_0paper();
+        $this->importPapersLoadBibtext_1paper();
+        $this->importPapersLoadBibtext_5papers();
+        $this->importPapersSaveBibtext_0papers();
+        $this->importPapersSaveBibtext_1paper();
+        $this->importPapersSaveBibtext_5papers();
+        $this->importPapersSaveBibtext_withExistingPapers();
+        $this->addPaperBibtex();
+        $this->saveBibtexPaper_noTitle();
+        $this->saveBibtexPaper();
+        $this->saveBibtexPaper_existingPaper();
+        $this->clearPapersValidation();
+        $this->clearPapersTemp();
+        $this->cancelClearPapers();
+        $this->biblerAddPaper();
+        $this->listPaper();
+        $this->viewPaper();
+        $this->displayPaperMin();
+        $this->clearPapers();
     }
 
     private function TestInitialize()

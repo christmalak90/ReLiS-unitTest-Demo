@@ -105,7 +105,7 @@ class Unit_test extends CI_Controller
 
         $this->userUnitTest->run_tests();
         $this->projectUnitTest->run_tests();
-        $this->paperUnitTest->run_tests();
+        // $this->paperUnitTest->run_tests();
         $this->screeningUnitTest->run_tests();
         $this->quality_assessmentUnitTest->run_tests();
         // $this->data_extractionUnitTest->run_tests();

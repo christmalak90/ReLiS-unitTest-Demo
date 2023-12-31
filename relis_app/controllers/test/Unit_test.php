@@ -55,7 +55,7 @@ class Unit_test extends CI_Controller
         $this->load->helper('tests/helpers/hhhhdh'); //////////////
         $this->load->helper('tests/helpers/uuuu'); //////////////
         $this->load->helper('tests/helpers/hfff'); //////////////
-        $this->load->helper('tests/userunittestggr'); ////////////////
+        $this->load->helper('tests/user_ut'); ////////////////
         $this->load->helper('tests/pppp'); ////////////
         // $this->load->helper('tests/paperunittest');
         // $this->load->helper('tests/screeningunittest');

@@ -110,17 +110,17 @@ class Unit_test extends CI_Controller
         $this->quality_assessmentUnitTest->run_tests();
         $this->data_extractionUnitTest->run_tests();
         $this->reportingUnitTest->run_tests();
-        // $this->elementUnitTest->run_tests(); 
-        // $this->homeUnitTest->run_tests();
-        // $this->installUnitTest->run_tests();
-        // $this->adminUnitTest->run_tests(); 
-        // $this->configUnitTest->run_tests();
-        // $this->manageUnitTest->run_tests();
-        // $this->managerUnitTest->run_tests();
-        // $this->relisManagerUnitTest->run_tests();
-        // $this->apiUnitTest->run_tests();
-        // $this->apiQueryUnitTest->run_tests();
-        // $this->opUnitTest->run_tests();
+        $this->elementUnitTest->run_tests(); 
+        $this->homeUnitTest->run_tests();
+        $this->installUnitTest->run_tests();
+        $this->adminUnitTest->run_tests(); 
+        $this->configUnitTest->run_tests();
+        $this->manageUnitTest->run_tests();
+        $this->managerUnitTest->run_tests();
+        $this->relisManagerUnitTest->run_tests();
+        $this->apiUnitTest->run_tests();
+        $this->apiQueryUnitTest->run_tests();
+        $this->opUnitTest->run_tests();
 
         // Record the end time of the tests
         $endTime = microtime(true);

@@ -41,7 +41,7 @@ jobs:
       - name: Run Unit test
         run: |
 
-          context=$(php -r "echo stream_context_create(array('http' => array('timeout' => 0)));")
+          context=$(php -r "echo stream_context_create(array('http' => array('timeout' => 500)));")
           response=$(php -r "echo file_get_contents('http://localhost:8083/test/unit_test/relis_unit_test/last_result', 0, \$context);")
           
           if [ "$response" == "successful" ]; then

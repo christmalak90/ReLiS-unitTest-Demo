@@ -52,8 +52,8 @@ class Unit_test extends CI_Controller
         // require_once('relis_app/libraries/table_config/project/temp/install_config_demoTestProject.php');
         require_once('relis_app/helpers/tests/testFiles/project/classification_install_demoTestProject.php');
 
-        $this->load->helper('tests/helpers/hhhhdh'); //////////////
-        $this->load->helper('tests/helpers/tests'); //////////////
+        $this->load->helper('tests/helpers/curl'); //////////////
+        $this->load->helper('tests/helpers/tests');
         $this->load->helper('tests/helpers/functions');
         $this->load->helper('tests/user_ut');
         $this->load->helper('tests/project_ut');

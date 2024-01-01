@@ -53,8 +53,8 @@ class Unit_test extends CI_Controller
         require_once('relis_app/helpers/tests/testFiles/project/classification_install_demoTestProject.php');
 
         $this->load->helper('tests/helpers/hhhhdh'); //////////////
-        $this->load->helper('tests/helpers/uuuu'); //////////////
-        $this->load->helper('tests/helpers/functions'); //////////////
+        $this->load->helper('tests/helpers/test'); //////////////
+        $this->load->helper('tests/helpers/functions');
         $this->load->helper('tests/user_ut');
         $this->load->helper('tests/project_ut');
         $this->load->helper('tests/paper_ut');
@@ -110,10 +110,10 @@ class Unit_test extends CI_Controller
         $this->quality_assessmentUnitTest->run_tests();
         $this->data_extractionUnitTest->run_tests();
         $this->reportingUnitTest->run_tests();
-        $this->elementUnitTest->run_tests(); 
+        $this->elementUnitTest->run_tests();
         $this->homeUnitTest->run_tests();
         $this->installUnitTest->run_tests();
-        $this->adminUnitTest->run_tests(); 
+        $this->adminUnitTest->run_tests();
         $this->configUnitTest->run_tests();
         $this->manageUnitTest->run_tests();
         $this->managerUnitTest->run_tests();
